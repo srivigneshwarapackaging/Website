@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sri Vigneshwara Packaging — Corrugated Site
 
-## Getting Started
+Premium marketing site with MongoDB CMS, Google OAuth admin, and scroll-driven storytelling.
 
-First, run the development server:
+## Project structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+frontend/   Next.js app (pages, components, client lib, public assets)
+backend/    Database, auth, models, server services
+shared/     Types and validation schemas used by both layers
+scripts/    Utility scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Copy environment variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example frontend/.env.local
+```
 
-## Learn More
+2. Fill in `frontend/.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+- `MONGODB_URI` — MongoDB Atlas connection string
+- `NEXTAUTH_SECRET` — random string (`openssl rand -base64 32`)
+- `NEXTAUTH_URL` — `http://localhost:3000` (or production URL)
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — Google OAuth credentials
+- `ADMIN_EMAIL` — Google account allowed to access `/admin`
+- Optional: `RESEND_API_KEY`, `SALES_EMAIL` for inquiry email notifications
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install and run from the repo root:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+4. Seed CMS (while logged in as admin):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+GET /api/admin/seed
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Or visit admin dashboard after OAuth login and publish content.
+
+## Admin
+
+- Login: `/auth/admin` (Google OAuth)
+- Dashboard: `/admin/dashboard`
+- Tabs: Hero, About, Process, Products, Sustainability, Contact, Company, Inquiries, Analytics
+- **Publish site** saves all content to MongoDB
+
+## Scripts
+
+- `npm run dev` — development server (`frontend/`)
+- `npm run build` — production build
+- `npm run lint` — ESLint
+
+## Architecture
+
+- **Frontend:** Next.js App Router, design system, Lenis smooth scroll, CMS-driven sections
+- **Backend:** MongoDB/Mongoose, NextAuth, admin API routes under `frontend/app/api/`
+- **Shared:** Content types (`shared/types/`) and Zod schemas (`shared/validation/`)

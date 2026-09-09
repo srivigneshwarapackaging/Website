@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" shape-rendering="geometricPrecision">
+  <defs>
+    <linearGradient id="top" x1="12" y1="6" x2="36" y2="16" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0e0c4"/>
+      <stop offset="50%" stop-color="#e8d5b7"/>
+      <stop offset="100%" stop-color="#c4a574"/>
+    </linearGradient>
+    <linearGradient id="left" x1="6" y1="16" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e8d5b7"/>
+      <stop offset="55%" stop-color="#c4a574"/>
+      <stop offset="100%" stop-color="#a07d4e"/>
+    </linearGradient>
+    <linearGradient id="right" x1="42" y1="16" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c4a574"/>
+      <stop offset="55%" stop-color="#a07d4e"/>
+      <stop offset="100%" stop-color="#7a5c38"/>
+    </linearGradient>
+  </defs>
+  <path d="M24 7.5 L37 14.25 L24 15.75 L11 14.25 Z" fill="url(#top)" stroke="#5c4528" stroke-width="0.35" stroke-opacity="0.25" stroke-linejoin="round"/>
+  <path d="M11 14.25 L24 15.75 L24 42.5 L7.5 35.25 Z" fill="url(#left)" stroke="#5c4528" stroke-width="0.4" stroke-opacity="0.3" stroke-linejoin="round"/>
+  <path d="M37 14.25 L24 15.75 L24 42.5 L40.5 35.25 Z" fill="url(#right)" stroke="#5c4528" stroke-width="0.4" stroke-opacity="0.3" stroke-linejoin="round"/>
+  <path d="M11 14.25 L24 15.75 L37 14.25 M24 15.75 L24 42.5" stroke="#f0e0c4" stroke-width="0.45" stroke-opacity="0.4" stroke-linejoin="round"/>
+  <path d="M7.5 35.25 L24 42.5 L40.5 35.25" stroke="#5c4528" stroke-width="0.45" stroke-opacity="0.35" stroke-linejoin="round"/>
+  <text x="24" y="12.9" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-family="system-ui,sans-serif" font-weight="700" fill="#1c1917">V</text>
+  <text x="16.6" y="27" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-family="system-ui,sans-serif" font-weight="700" fill="#1c1917" transform="rotate(-27 16.6 27)">S</text>
+  <text x="31.4" y="27" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-family="system-ui,sans-serif" font-weight="700" fill="#1c1917" transform="rotate(27 31.4 27)">P</text>
+</svg>
