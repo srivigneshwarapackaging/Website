@@ -1,36 +1,85 @@
 import { cn } from "@/lib/utils";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from "react";
 
-type Variant = "primary" | "ghost" | "outline";
-
-/** Premium kraft gold — matches admin portal primary actions */
-export const primaryButtonClass =
-  "bg-gradient-to-r from-kraft to-kraft-dark text-charcoal shadow-lg shadow-kraft/25 hover:from-kraft-light hover:to-kraft hover:shadow-xl hover:shadow-kraft/30";
+type Variant = "primary" | "secondary" | "outline" | "ghost";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
+  icon?: ReactNode;
+  arrow?: boolean;
 }
 
+/**
+ * Premium minimal button system
+ * Primary: Solid copper with subtle hover darkening
+ * Secondary/Outline: Transparent with charcoal text
+ */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", children, ...props }, ref) => (
+  ({ className, variant = "primary", children, icon, arrow, ...props }, ref) => (
     <button
       ref={ref}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-8 py-3.5 text-sm font-bold tracking-tight transition-all duration-300 active:scale-[0.98] disabled:opacity-50",
-        variant === "primary" && primaryButtonClass,
-        variant === "ghost" &&
-          "bg-charcoal text-white hover:bg-black dark:bg-zinc-100 dark:text-charcoal dark:hover:bg-white ring-1 ring-stone-200/20",
-        variant === "outline" &&
-          "border border-stone-300/80 bg-white/50 text-stone-800 backdrop-blur-sm hover:border-kraft hover:text-kraft-dark dark:border-zinc-600 dark:bg-zinc-900/50 dark:text-zinc-100 dark:hover:border-kraft dark:hover:text-kraft-light",
+        "group relative inline-flex items-center justify-center gap-2",
+        "rounded-[10px] px-7 py-3.5 text-sm font-semibold tracking-wide",
+        "transition-all duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+        "active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed",
+        "focus-visible:outline-2 focus-visible:outline-copper focus-visible:outline-offset-3",
+        // Primary: Solid copper
+        variant === "primary" && [
+          "bg-copper text-white",
+          "hover:bg-copper-dark",
+          "shadow-sm hover:shadow-md",
+        ],
+        // Secondary: Copper border, copper text
+        variant === "secondary" && [
+          "bg-transparent text-copper",
+          "border border-copper/40",
+          "hover:bg-copper/5 hover:border-copper",
+        ],
+        // Outline: Neutral border, charcoal text
+        variant === "outline" && [
+          "bg-transparent text-charcoal",
+          "border border-charcoal/15",
+          "hover:border-copper hover:text-copper",
+        ],
+        // Ghost: No border, minimal
+        variant === "ghost" && [
+          "bg-transparent text-charcoal",
+          "hover:text-copper hover:bg-copper/5",
+        ],
         className
       )}
       {...props}
     >
-      {variant === "primary" && (
-        <span className="pointer-events-none absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-white/0 via-white/30 to-white/0 transition-transform duration-700 group-hover:translate-x-[100%]" />
+      {icon && <span className="flex-shrink-0">{icon}</span>}
+      <span className="relative">{children}</span>
+      {arrow && (
+        <span className="transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1">
+          →
+        </span>
       )}
-      <span className="relative inline-flex items-center justify-center gap-2">{children}</span>
     </button>
   )
 );
 Button.displayName = "Button";
+
+// Link-style button for less prominent CTAs
+export const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, children, ...props }, ref) => (
+    <button
+      ref={ref}
+      className={cn(
+        "group inline-flex items-center gap-2",
+        "text-sm font-semibold text-charcoal",
+        "hover:text-copper",
+        "transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      <span>{children}</span>
+      <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+    </button>
+  )
+);
+LinkButton.displayName = "LinkButton";

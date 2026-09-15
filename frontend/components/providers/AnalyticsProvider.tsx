@@ -5,12 +5,13 @@ import { sendAnalyticsPayload } from "@/lib/analytics-utils";
 
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const activeSection = useRef("hero");
-  const startTime = useRef(Date.now());
+  const startTime = useRef<number | null>(null);
   const pageViewSent = useRef(false);
 
   useEffect(() => {
     if (pageViewSent.current || window.location.pathname.includes("admin")) return;
     pageViewSent.current = true;
+    startTime.current = Date.now();
 
     sendAnalyticsPayload({
       sectionId: "page",
@@ -22,7 +23,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const now = Date.now();
-            const timeSpent = Math.round((now - startTime.current) / 1000);
+            const timeSpent = Math.round((now - (startTime.current ?? now)) / 1000);
 
             if (timeSpent > 1 && activeSection.current) {
               sendAnalyticsPayload({

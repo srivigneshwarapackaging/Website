@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils";
 
+/**
+ * Section display heading — Syne (§4).
+ * Instrument Serif is reserved for selective editorial emphasis via
+ * <EditorialAccent>, never for whole headings.
+ */
 export function DisplayHeading({
   children,
   className,
@@ -12,7 +17,7 @@ export function DisplayHeading({
   return (
     <Tag
       className={cn(
-        "font-display text-[clamp(2.5rem,6vw,4.5rem)] font-normal tracking-[-0.03em] leading-[0.92] text-stone-900 dark:text-stone-50",
+        "font-hero text-[clamp(2.25rem,4vw,4.25rem)] font-bold leading-[1.05] tracking-[-0.03em] text-text-primary",
         className
       )}
     >
@@ -31,11 +36,29 @@ export function BodyText({
   return (
     <p
       className={cn(
-        "text-lg md:text-xl text-stone-600 dark:text-stone-400 leading-[1.7] font-light",
+        "text-lg leading-[1.7] text-text-secondary",
         className
       )}
     >
       {children}
     </p>
+  );
+}
+
+/**
+ * Editorial accent — Instrument Serif, italic, for emphasising a few words
+ * inside an otherwise Syne headline. Use sparingly (§4).
+ */
+export function EditorialAccent({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <em className={cn("font-display font-normal not-italic", className)}>
+      {children}
+    </em>
   );
 }

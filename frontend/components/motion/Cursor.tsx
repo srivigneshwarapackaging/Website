@@ -8,7 +8,6 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
  * interactive elements. Disabled entirely on touch / coarse pointers.
  */
 export function Cursor() {
-  const [enabled, setEnabled] = useState(false);
   const [active, setActive] = useState(false);
   const [hidden, setHidden] = useState(true);
 
@@ -22,7 +21,6 @@ export function Cursor() {
       window.matchMedia("(pointer: fine)").matches &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine) return;
-    setEnabled(true);
     document.documentElement.classList.add("has-custom-cursor");
 
     const move = (e: MouseEvent) => {
@@ -45,8 +43,6 @@ export function Cursor() {
       document.documentElement.classList.remove("has-custom-cursor");
     };
   }, [x, y]);
-
-  if (!enabled) return null;
 
   return (
     <div

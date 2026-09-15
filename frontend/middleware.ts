@@ -1,6 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { getAdminEmail } from "@/backend/auth/options";
+import { getAdminEmails } from "@/backend/auth/options";
 
 export default withAuth(
   function middleware() {
@@ -8,7 +8,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => token?.email === getAdminEmail(),
+      authorized: ({ token }) => Boolean(token?.email && getAdminEmails().includes(String(token.email).trim().toLowerCase())),
     },
     pages: {
       signIn: "/auth/admin",

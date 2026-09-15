@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { homepageSchema, DEFAULT_HOMEPAGE } from "@/shared/types/homepage";
 
 const statItemSchema = z.object({
   value: z.string().min(1).max(50),
@@ -47,6 +48,7 @@ const socialLinkSchema = z.object({
 });
 
 export const siteContentSchema = z.object({
+  homepage: homepageSchema.default(DEFAULT_HOMEPAGE),
   seo: z.object({
     title: z.string().min(1).max(200),
     description: z.string().min(1).max(500),

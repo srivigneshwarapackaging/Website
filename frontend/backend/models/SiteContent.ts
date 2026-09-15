@@ -50,6 +50,7 @@ const SocialLinkSchema = new mongoose.Schema(
 
 const SiteContentSchema = new mongoose.Schema(
   {
+    homepage: { type: mongoose.Schema.Types.Mixed },
     seo: {
       title: String,
       description: String,
@@ -139,6 +140,12 @@ const SiteContentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Extend the cached model during development too, so hot reload does not
+// silently discard the newly introduced homepage fields on save.
+if (mongoose.models.SiteContent && !mongoose.models.SiteContent.schema.path("homepage")) {
+  mongoose.models.SiteContent.schema.add({ homepage: { type: mongoose.Schema.Types.Mixed } });
+}
 
 export default mongoose.models.SiteContent ||
   mongoose.model("SiteContent", SiteContentSchema);

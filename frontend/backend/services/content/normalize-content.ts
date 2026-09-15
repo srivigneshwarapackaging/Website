@@ -10,6 +10,8 @@ import {
   NavLink,
 } from "@/shared/types/content-types";
 
+import { normalizeHomepage } from "@/shared/types/homepage";
+
 function slugify(name: string) {
   return name
     .toLowerCase()
@@ -222,6 +224,7 @@ export function normalizeSiteContent(raw: Record<string, unknown> | null): SiteC
   const heroBase = DEFAULT_SITE_CONTENT.hero;
 
   return {
+    homepage: normalizeHomepage(raw.homepage),
     seo: {
       ...DEFAULT_SITE_CONTENT.seo,
       ...((raw.seo as object) || {}),

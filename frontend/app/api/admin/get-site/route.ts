@@ -1,7 +1,6 @@
 import { connectDB } from "@/backend/db/connection";
 import SiteContent from "@/backend/models/SiteContent";
 import { normalizeSiteContent } from "@/backend/services/content/normalize-content";
-import { DEFAULT_SITE_CONTENT } from "@/shared/types/content-types";
 import { NextResponse } from "next/server";
 
 export const revalidate = 0;
@@ -14,6 +13,6 @@ export async function GET() {
     return NextResponse.json(normalizeSiteContent(content as Record<string, unknown>));
   } catch (error) {
     console.error("Fetch Error:", error);
-    return NextResponse.json(DEFAULT_SITE_CONTENT);
+    return NextResponse.json({ error: "Content could not be loaded. Please retry before editing." }, { status: 503 });
   }
 }

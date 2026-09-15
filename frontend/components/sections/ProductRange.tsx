@@ -1,54 +1,52 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import type { ProductsContent } from "@/shared/types/content-types";
 import { Eyebrow } from "@/components/design-system/Eyebrow";
-import { DisplayHeading } from "@/components/design-system/Heading";
-import { Button } from "@/components/design-system/Button";
-import { SplitHeadline } from "@/components/motion/SplitHeadline";
 import { ProductCatalogue } from "@/components/products/ProductCatalogue";
 
+/**
+ * Products — §16
+ * Plain section header, catalogue grid below. No background wash, no gradient,
+ * no glow behind the heading.
+ */
 export function ProductRange({ data }: { data: ProductsContent }) {
   return (
-    <div className="relative">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-x-6 -top-12 bottom-0 -z-10 rounded-[var(--radius-panel)] opacity-40 dark:opacity-20"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(196,165,116,0.12), transparent 70%)",
-        }}
-      />
-
-      <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
-        <div className="max-w-xl">
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="max-w-2xl">
           <Eyebrow>{data.eyebrow}</Eyebrow>
-          <DisplayHeading>
-            <SplitHeadline text={data.title} />
-          </DisplayHeading>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-stone-500 dark:text-stone-400">
+          <h2 className="font-hero text-[clamp(2.25rem,4vw,4.25rem)] font-bold leading-[1.05] tracking-[-0.03em] text-text-primary">
+            {data.title}
+          </h2>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary">
             {data.description}
           </p>
         </div>
-        <Link href="/products" className="hidden sm:inline-block" data-cursor="link">
-          <Button variant="outline" className="group">
-            Full catalogue
-            <ArrowUpRight
-              size={16}
-              className="shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Button>
+
+        <Link
+          href="/products"
+          className="group hidden min-h-[44px] items-center gap-2 text-[0.85rem] font-semibold text-copper transition-colors hover:text-copper-dark sm:inline-flex"
+        >
+          Full catalogue
+          <span
+            aria-hidden
+            className="transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+          >
+            →
+          </span>
         </Link>
       </div>
 
-      <ProductCatalogue data={data} variant="home" limit={4} layoutId="ply-pill" />
+      <ProductCatalogue data={data} variant="home" limit={4} />
 
-      <div className="mt-8 sm:hidden">
-        <Link href="/products">
-          <Button variant="outline" className="w-full">
-            View full catalogue
-          </Button>
+      <div className="mt-10 sm:hidden">
+        <Link
+          href="/products"
+          className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-[10px] border border-charcoal/15 text-[0.85rem] font-semibold text-text-primary transition-colors hover:border-copper hover:text-copper"
+        >
+          View full catalogue
+          <span aria-hidden>→</span>
         </Link>
       </div>
     </div>

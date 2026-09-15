@@ -22,7 +22,11 @@ const CONNECT_OPTIONS = {
 } as const;
 
 export const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) {
+  // `readyState === 2` means a connection is currently being established.
+  // Returning early for that state lets queries run before the connection is
+  // ready (especially with `bufferCommands: false`). Always await the shared
+  // connection promise instead.
+  if (mongoose.connection.readyState === 1) {
     return mongoose.connection;
   }
 

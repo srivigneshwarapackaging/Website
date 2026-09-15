@@ -1,8 +1,17 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export function getAdminEmail() {
-  return process.env.ADMIN_EMAIL || "preethamcv.2006@gmail.com";
+export function getAdminEmails() {
+  const configured = (process.env.ADMIN_EMAIL || "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+  // Keep the two owner accounts available even if an older dev server has
+  // not reloaded `.env.local` yet. Additional addresses can still be added
+  // through ADMIN_EMAIL as a comma-separated list.
+  return Array.from(
+    new Set([...configured, "svcartons2015@gmail.com", "cvjayanthkrishna@gmail.com"]),
+  );
 }
 
 export const authOptions: NextAuthOptions = {
@@ -18,7 +27,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user }) {
-      return user.email === getAdminEmail();
+      return Boolean(user.email && getAdminEmails().includes(user.email.trim().toLowerCase()));
     },
     async jwt({ token, user }) {
       if (user) {

@@ -1,22 +1,27 @@
 "use client";
 
 import { useEffect } from "react";
+import {
+  ScrollTrigger,
+  registerScrollPlugins,
+} from "@/lib/scroll-triggers";
 import { computeSectionFromDOM, useJourneyStore } from "@/store/useJourneyStore";
 
 /**
- * Lightweight scroll spy. Keeps the journey store's active section /
- * section progress in sync with the page so nav highlighting, the process
- * step highlight, and product variant interactions keep working — without
- * any 3D canvas or fixed video pane.
+ * Keeps the journey store's active section / progress in sync with the page,
+ * so nav highlighting and product variant interactions keep working.
+ *
+ * Runs on ScrollTrigger's clock rather than its own scroll listener: a second
+ * listener would race the first and, once sections are pinned, would read
+ * positions that disagree with what the pinned scenes are rendering.
  */
 export function ScrollSpy() {
   const syncFromScroll = useJourneyStore((s) => s.syncFromScroll);
 
   useEffect(() => {
-    let raf = 0;
+    registerScrollPlugins();
 
     const update = () => {
-      raf = 0;
       const doc = document.documentElement;
       const max = doc.scrollHeight - window.innerHeight;
       const globalProgress = max > 0 ? window.scrollY / max : 0;
@@ -24,20 +29,16 @@ export function ScrollSpy() {
       syncFromScroll({ globalProgress, activeSection, sectionProgress });
     };
 
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(update);
-    };
-
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
 
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    const trigger = ScrollTrigger.create({
+      start: 0,
+      end: () => document.documentElement.scrollHeight,
+      onUpdate: update,
+      onRefresh: update,
+    });
+
+    return () => trigger.kill();
   }, [syncFromScroll]);
 
   return null;

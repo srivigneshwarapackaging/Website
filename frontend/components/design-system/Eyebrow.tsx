@@ -1,20 +1,25 @@
 import { cn } from "@/lib/utils";
 
-export function Eyebrow({
-  children,
-  className,
-}: {
+interface EyebrowProps {
   children: React.ReactNode;
   className?: string;
-}) {
+  showLine?: boolean;
+}
+
+/**
+ * Small eyebrow label with copper accent
+ * Used for section categories, technical labels
+ */
+export function Eyebrow({ children, className, showLine = true }: EyebrowProps) {
   return (
     <p
       className={cn(
-        "inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.35em] text-accent mb-5",
+        "inline-flex items-center gap-3",
+        "text-[11px] font-bold uppercase tracking-[0.15em] text-copper mb-5",
         className
       )}
     >
-      <span className="h-px w-8 bg-accent/60" />
+      {showLine && <span className="h-px w-6 bg-copper/60" />}
       {children}
     </p>
   );

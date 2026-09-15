@@ -1,69 +1,69 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import type { SiteContentData } from "@/shared/types/content-types";
 import { Container } from "@/components/design-system/Container";
 import { Eyebrow } from "@/components/design-system/Eyebrow";
-import { DisplayHeading } from "@/components/design-system/Heading";
-import { Button } from "@/components/design-system/Button";
-import { GrainOverlay } from "@/components/design-system/PremiumEffects";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
-import { ScrollProgress } from "@/components/motion/ScrollProgress";
-import { Cursor } from "@/components/motion/Cursor";
-import { ScrollReveal } from "@/components/motion/ScrollReveal";
-import { SplitHeadline } from "@/components/motion/SplitHeadline";
-import { Magnetic } from "@/components/motion/MagneticButton";
 import { ProductCatalogue } from "./ProductCatalogue";
 import { plyLabel } from "./shared";
 
+/**
+ * Full catalogue page.
+ * The grid answers "which one do I need"; the table answers "how do they
+ * compare". Same content, two different jobs — kept apart rather than stacked.
+ */
 function SpecComparisonTable({
   items,
 }: {
   items: SiteContentData["products"]["items"];
 }) {
   return (
-    <ScrollReveal kind="fade" className="mt-20 overflow-x-auto">
-      <div className="min-w-[640px] overflow-hidden rounded-[var(--radius-panel)] border border-stone-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="border-b border-stone-200/80 px-6 py-4 dark:border-zinc-800">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-            Spec comparison
-          </p>
-        </div>
-        <table className="w-full text-left text-sm">
+    <div className="mt-20">
+      <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-text-muted">
+        Compare all specifications
+      </h2>
+
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-full min-w-[640px] border-collapse text-left">
           <thead>
-            <tr className="border-b border-stone-100 text-[10px] font-black uppercase tracking-widest text-stone-400 dark:border-zinc-800">
-              <th className="px-6 py-4">Product</th>
-              <th className="px-6 py-4">Ply</th>
-              <th className="px-6 py-4">Strength</th>
-              <th className="px-6 py-4">Flute</th>
-              <th className="px-6 py-4">Use case</th>
+            <tr className="border-b border-charcoal/14">
+              {["Product", "Construction", "Load", "Flute", "Typical use"].map(
+                (h) => (
+                  <th
+                    key={h}
+                    scope="col"
+                    className="py-3 pr-6 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-text-muted"
+                  >
+                    {h}
+                  </th>
+                )
+              )}
             </tr>
           </thead>
           <tbody>
-            {items.map((product, i) => (
+            {items.map((product) => (
               <tr
                 key={product.slug}
-                className={`border-b border-stone-50 transition-colors last:border-0 hover:bg-stone-50/80 dark:border-zinc-800/50 dark:hover:bg-zinc-800/30 ${
-                  i % 2 === 0 ? "bg-stone-50/40 dark:bg-zinc-950/40" : ""
-                }`}
+                className="border-b border-charcoal/8 transition-colors hover:bg-alabaster"
               >
-                <td className="px-6 py-4 font-display font-semibold text-stone-900 dark:text-white">
+                <th
+                  scope="row"
+                  className="py-4 pr-6 text-left text-[0.95rem] font-semibold text-text-primary"
+                >
                   {product.name}
+                </th>
+                <td className="py-4 pr-6 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-copper">
+                  {plyLabel(product.ply)}
                 </td>
-                <td className="px-6 py-4">
-                  <span className="rounded-full bg-charcoal px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-kraft-light">
-                    {plyLabel(product.ply)}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-stone-600 dark:text-stone-300">
+                <td className="py-4 pr-6 text-[0.875rem] tabular-nums text-text-secondary">
                   {product.strength}
                 </td>
-                <td className="px-6 py-4 text-stone-600 dark:text-stone-300">
+                <td className="py-4 pr-6 text-[0.875rem] text-text-secondary">
                   {product.flute}
                 </td>
-                <td className="max-w-xs px-6 py-4 text-xs leading-relaxed text-stone-500">
+                <td className="max-w-xs py-4 pr-6 text-[0.875rem] leading-relaxed text-text-secondary">
                   {product.use}
                 </td>
               </tr>
@@ -71,93 +71,85 @@ function SpecComparisonTable({
           </tbody>
         </table>
       </div>
-    </ScrollReveal>
+    </div>
   );
 }
 
 export function ProductCataloguePage({ content }: { content: SiteContentData }) {
   return (
     <>
-      <GrainOverlay />
-      <ScrollProgress />
-      <Cursor />
-      <SmoothScroll />
+      <SmoothScroll enabled />
 
-      <div className="sticky top-0 z-50 border-b border-stone-200/80 bg-white/80 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/80">
-        <Container className="flex items-center justify-between py-5">
+      <header className="sticky top-0 z-50 border-b border-charcoal/[0.07] bg-white/92 backdrop-blur-md">
+        <Container className="flex h-[72px] items-center justify-between">
           <Link
             href="/"
-            className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-500 transition-colors hover:text-accent"
-            data-cursor="link"
+            className="group flex min-h-[44px] items-center gap-2 text-[0.8rem] font-semibold text-text-secondary transition-colors hover:text-copper"
           >
-            ← Home
+            <span
+              aria-hidden
+              className="transition-transform duration-200 group-hover:-translate-x-1 motion-reduce:transform-none"
+            >
+              ←
+            </span>
+            Home
           </Link>
-          <span className="font-display text-sm font-bold">{content.company.name}</span>
-          <Magnetic>
-            <Link href="/#contact" data-cursor="link">
-              <Button className="!px-5 !py-2.5 !text-xs">Get quote</Button>
-            </Link>
-          </Magnetic>
-        </Container>
-      </div>
 
-      <main className="relative z-10 bg-surface dark:bg-surface-dark">
-        {/* Hero */}
-        <section className="relative overflow-hidden py-20 md:py-28">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-50"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 60% at 50% -10%, rgba(196,165,116,0.18), transparent 65%)",
-            }}
-          />
-          <Container className="relative">
+          <Link
+            href="/#contact"
+            className="flex min-h-[44px] items-center gap-2 rounded-[10px] bg-copper px-6 text-[0.8rem] font-semibold text-white transition-colors hover:bg-copper-dark"
+          >
+            Get a quote
+            <span aria-hidden>→</span>
+          </Link>
+        </Container>
+      </header>
+
+      <main id="main-content" className="bg-white">
+        {/* Page heading */}
+        <section className="py-20 md:py-24 lg:py-28">
+          <Container>
             <Eyebrow>Full catalogue</Eyebrow>
-            <DisplayHeading className="max-w-3xl">
-              <SplitHeadline text={content.products.title} />
-            </DisplayHeading>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-stone-500 dark:text-stone-400">
-              {content.company.tagline} Explore every ply configuration, compare specs side by side,
-              and find the right carton for your load.
+            <h1 className="max-w-3xl font-hero text-[clamp(2.5rem,5vw,5rem)] font-bold leading-[1.03] tracking-[-0.035em] text-text-primary">
+              {content.products.title}
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
+              Every ply configuration we manufacture, with the load and flute
+              specification for each.
             </p>
           </Container>
         </section>
 
-        {/* Interactive catalogue */}
-        <section className="pb-20 md:pb-28">
+        <section className="border-t border-charcoal/10 pb-24 md:pb-28">
           <Container>
-            <ProductCatalogue
-              data={content.products}
-              variant="full"
-              layoutId="ply-pill-catalogue"
-            />
+            <ProductCatalogue data={content.products} variant="full" />
             <SpecComparisonTable items={content.products.items} />
           </Container>
         </section>
 
-        {/* CTA band */}
-        <section className="border-y border-stone-200/80 bg-charcoal py-16 text-white dark:border-zinc-800">
-          <Container className="flex flex-wrap items-center justify-between gap-8">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-kraft-light">
-                Ready to order?
+        {/* CTA */}
+        <section className="border-t border-charcoal/10 bg-alabaster py-20 md:py-24">
+          <Container className="flex flex-wrap items-end justify-between gap-8">
+            <div className="max-w-xl">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-copper">
+                Ready to order
               </p>
-              <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">
-                Custom specs, bulk pricing, fast turnaround
+              <h2 className="mt-4 font-hero text-[clamp(1.75rem,3vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.03em] text-text-primary">
+                Send us the spec and we&rsquo;ll quote it.
               </h2>
             </div>
-            <Magnetic>
-              <Link href="/#contact" data-cursor="link">
-                <Button className="group">
-                  Request a quote
-                  <ArrowUpRight
-                    size={16}
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </Button>
-              </Link>
-            </Magnetic>
+            <Link
+              href="/#contact"
+              className="group flex min-h-[48px] items-center gap-2 rounded-[10px] bg-copper px-8 text-[0.85rem] font-semibold text-white transition-colors hover:bg-copper-dark"
+            >
+              Request a quote
+              <span
+                aria-hidden
+                className="transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+              >
+                →
+              </span>
+            </Link>
           </Container>
         </section>
       </main>

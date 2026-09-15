@@ -1,115 +1,38 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 import type { SustainabilityContent } from "@/shared/types/content-types";
-import { Eyebrow } from "@/components/design-system/Eyebrow";
-import { DisplayHeading, BodyText } from "@/components/design-system/Heading";
 import { Counter } from "@/components/motion/Counter";
-import { ScrollReveal, RevealItem } from "@/components/motion/ScrollReveal";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const PRINCIPLES = [
+  "Closed-loop industrial paper scrap recycling",
+  "Zero plastic lining or hazardous solvent inks",
+  "Compostable, biodegradable board matrix",
+];
 
-function ringPercent(stat: string): number {
-  const num = parseFloat(stat.replace(/[^\d.]/g, ""));
-  if (stat.includes("%") && Number.isFinite(num)) return Math.min(100, num);
-  return 100;
-}
-
-function ProgressRing({ stat, label }: { stat: string; label: string }) {
-  const percent = ringPercent(stat);
-  const r = 52;
-  const c = 2 * Math.PI * r;
-
-  return (
-    <div className="group flex flex-col items-center rounded-2xl border border-emerald-700/40 bg-emerald-950/50 p-6 text-center backdrop-blur-sm transition-all hover:border-emerald-500/50 hover:bg-emerald-900/40">
-      <div className="relative h-32 w-32">
-        <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
-          <circle
-            cx="60"
-            cy="60"
-            r={r}
-            fill="none"
-            stroke="rgba(16,185,129,0.15)"
-            strokeWidth="6"
-          />
-          <motion.circle
-            cx="60"
-            cy="60"
-            r={r}
-            fill="none"
-            stroke="url(#ecoGrad)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeDasharray={c}
-            initial={{ strokeDashoffset: c }}
-            whileInView={{ strokeDashoffset: c - (c * percent) / 100 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 1.6, ease: EASE }}
-          />
-          <defs>
-            <linearGradient id="ecoGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#34d399" />
-              <stop offset="100%" stopColor="#065f46" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-display text-2xl md:text-3xl font-bold text-emerald-300">
-            <Counter value={stat} />
-          </span>
-        </div>
-      </div>
-      <div className="mt-4 text-[9px] font-black uppercase tracking-[0.25em] text-emerald-200/60">
-        {label}
-      </div>
-    </div>
-  );
-}
-
-export function SustainabilitySection({ data }: { data: SustainabilityContent }) {
+/** Sustainability uses the same editorial grid as the manufacturing content. */
+export function SustainabilitySection({ data, principles = PRINCIPLES }: { data: SustainabilityContent; principles?: string[] }) {
+  const reduced = useReducedMotion();
   const words = data.title.split(" ");
-  const lastWord = words.pop() || "";
-  const rest = words.join(" ");
+  const emphasis = words.pop();
 
   return (
-    <div className="relative overflow-hidden rounded-[var(--radius-panel)] bg-gradient-to-br from-emerald-950 via-emerald-900 to-charcoal p-10 md:p-16 text-white shadow-[var(--shadow-premium)]">
-      <div
-        className="bg-mesh-drift pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 15% 85%, rgba(52,211,153,0.4) 0%, transparent 50%), radial-gradient(circle at 85% 15%, rgba(6,78,59,0.6) 0%, transparent 40%)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,0.5) 12px, rgba(255,255,255,0.5) 13px)",
-        }}
-      />
-
-      <div className="relative grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div>
-          <Eyebrow className="text-emerald-400/90">{data.eyebrow}</Eyebrow>
-          <DisplayHeading className="text-white mb-6">
-            {rest} <span className="italic text-emerald-300">{lastWord}</span>
-          </DisplayHeading>
-          <ScrollReveal kind="blur">
-            <BodyText className="text-emerald-100/75 max-w-lg">{data.description}</BodyText>
-          </ScrollReveal>
-        </div>
-
-        <ScrollReveal
-          stagger={0.12}
-          className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3"
-        >
-          {data.stats.map((item, i) => (
-            <RevealItem key={i} kind="scale">
-              <ProgressRing stat={item.stat} label={item.label} />
-            </RevealItem>
-          ))}
-        </ScrollReveal>
+    <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
+      <div className="lg:col-span-6">
+        <p className="font-technical text-eco-deep">{data.eyebrow}</p>
+        <h2 className="mt-5 max-w-xl font-hero text-[clamp(2.5rem,4vw,5rem)] font-bold leading-[1.05] tracking-[-0.03em] text-text-primary">
+          {words.join(" ")} <span className="font-editorial font-normal italic text-eco-deep">{emphasis}</span>
+        </h2>
+        <p className="mt-6 max-w-lg text-lg leading-[1.7] text-text-secondary">{data.description}</p>
+        <ul className="mt-9 space-y-4 border-t border-charcoal/10 pt-7">
+          {principles.map((principle) => <li key={principle} className="flex gap-3 text-sm leading-relaxed text-text-secondary"><CheckCircle2 size={17} className="mt-0.5 shrink-0 text-eco-deep" />{principle}</li>)}
+        </ul>
       </div>
+
+      <motion.dl initial={reduced ? false : { opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.6 }} className="grid self-end border-y border-charcoal/10 sm:grid-cols-3 lg:col-span-6">
+        {data.stats.map((item, index) => <div key={item.label} className={`px-0 py-7 sm:px-5 sm:py-9 ${index > 0 ? "border-t border-charcoal/10 sm:border-l sm:border-t-0" : ""}`}><dt className="font-technical !text-[0.64rem] text-text-muted">{item.label}</dt><dd className="mt-5 font-hero text-[clamp(2rem,3vw,3.5rem)] font-bold leading-none tracking-[-0.04em] text-text-primary"><Counter value={item.stat} /></dd></div>)}
+      </motion.dl>
     </div>
   );
 }

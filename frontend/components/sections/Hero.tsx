@@ -1,230 +1,122 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
-import type { HeroContent, CompanyContent } from "@/shared/types/content-types";
-import { Eyebrow } from "@/components/design-system/Eyebrow";
+import { motion, useReducedMotion } from "framer-motion";
+import type { HeroContent } from "@/shared/types/content-types";
 import { Button } from "@/components/design-system/Button";
 import { SplitHeadline } from "@/components/motion/SplitHeadline";
-import { Counter } from "@/components/motion/Counter";
-import { Magnetic } from "@/components/motion/MagneticButton";
 import { scrollToSection } from "@/lib/scroll-to";
+import Image from "next/image";
 
-function parseTitle(title: string) {
-  const dot = title.indexOf(". ");
-  if (dot > 0) return { line1: title.slice(0, dot + 1), line2: title.slice(dot + 2) };
-  return { line1: title, line2: "" };
+/**
+ * Hero — §11 / §12 / §13
+ * Light background, 55/45 split, one dominant box with small engineering
+ * callouts. Load sequence: eyebrow → headline (line by line) → paragraph →
+ * CTAs → box. Trust metrics live in their own section directly below (§14).
+ */
+
+function splitHeadline(title: string) {
+  const trimmed = title.trim();
+  const dot = trimmed.indexOf(". ");
+  if (dot > 0) {
+    return [trimmed.slice(0, dot + 1), trimmed.slice(dot + 2)];
+  }
+  // "Packaging made to perform." → two balanced lines rather than one long one.
+  const words = trimmed.split(" ");
+  if (words.length > 3) {
+    const mid = Math.ceil(words.length / 2);
+    return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+  }
+  return [trimmed, ""];
 }
 
-export function HeroSection({
-  data,
-  company,
-  introComplete = true,
-  introInstant = false,
-}: {
-  data: HeroContent;
-  company: CompanyContent;
-  introComplete?: boolean;
-  introInstant?: boolean;
-}) {
-  const { line1, line2 } = parseTitle(data.title);
-  const ref = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+const CALLOUTS = ["Protect", "Perform", "Progress"];
+
+export function HeroSection({ data }: { data: HeroContent }) {
   const reduced = useReducedMotion();
-  const revealDuration = introInstant ? 0 : 1.2;
-  const contentDelay = (offset: number) =>
-    introComplete && !introInstant ? offset : 0;
-  const contentDuration = introInstant ? 0 : undefined;
+  const [line1, line2] = splitHeadline(data.title);
 
-  useEffect(() => {
-    const vid = videoRef.current;
-    const section = ref.current;
-    if (!vid || !section || !introComplete) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          vid.play().catch(() => {});
-        } else {
-          vid.pause();
-        }
-      },
-      { threshold: 0.12 }
-    );
-    io.observe(section);
-    return () => io.disconnect();
-  }, [introComplete]);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
-  const mediaY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.45, 0.9]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const fade = (delay: number) =>
+    reduced
+      ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+      : {
+          initial: { opacity: 0, y: 14 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
+        };
 
   return (
-    <motion.section
-      ref={ref}
+    <section
       id="hero"
-      className="relative flex min-h-screen flex-col justify-center overflow-hidden scroll-mt-24"
-      initial={false}
-      animate={{
-        opacity: introComplete ? 1 : 0,
-        scale: introComplete ? 1 : 1.03,
-      }}
-      transition={{ duration: revealDuration, ease: [0.22, 1, 0.36, 1] }}
+      className="relative isolate min-h-[min(780px,100svh)] scroll-mt-24 overflow-hidden bg-[#f5f1e8] pt-[104px] pb-16 md:pt-[136px] lg:pt-[152px]"
     >
-      <motion.div
-        className="absolute inset-0 -z-10"
-        initial={false}
-        animate={{ opacity: introComplete ? 1 : 0 }}
-        transition={{ duration: introInstant ? 0 : 1.3, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <motion.div
-          className="h-full w-full"
-          style={reduced ? undefined : { scale: mediaScale, y: mediaY }}
-        >
-        {data.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={data.imageUrl} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            src={data.videoUrl || "/videos/factory.mp4"}
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            poster="/box1.jpg"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/85 to-charcoal/45" />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-charcoal/40" />
-        <motion.div
-          className="absolute inset-0 bg-charcoal"
-          style={reduced ? { opacity: 0 } : { opacity: overlayOpacity }}
-        />
-        </motion.div>
-      </motion.div>
+      <Image src={data.imageUrl || "/materials/hero-kraft-box.png"} alt="Unbranded corrugated box framed by kraft paper" fill priority sizes="100vw" className="pointer-events-none absolute inset-0 -z-10 object-cover object-[66%_center]" />
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 -z-10 w-full bg-[#f5f1e8]/45 md:w-[53%]" />
+      <div className="mx-auto flex min-h-[calc(min(780px,100svh)-104px)] w-full max-w-[1400px] items-center px-6 md:px-8 lg:min-h-[calc(min(780px,100svh)-152px)] lg:px-16">
+        <div className="grid w-full items-center gap-14 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-6">
+            <motion.p
+              {...fade(0.08)}
+              className="mb-6 inline-flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-copper"
+            >
+              <span aria-hidden className="h-px w-6 bg-copper" />
+              {data.eyebrow}
+            </motion.p>
 
-      <motion.div
-        className="mx-auto w-full max-w-6xl flex-1 flex items-center px-6 pt-28 pb-24 lg:px-10"
-        style={reduced ? undefined : { y: contentY, opacity: contentOpacity }}
-      >
-        <div className="max-w-3xl -ml-[1in]">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: introComplete ? 1 : 0, y: introComplete ? 0 : 12 }}
-            transition={{
-              duration: contentDuration ?? 0.6,
-              delay: contentDelay(0.2),
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          >
-            <Eyebrow className="text-kraft-light">{data.eyebrow || company.tagline || company.name}</Eyebrow>
-          </motion.div>
+            <h1 className="font-body text-[clamp(3rem,6vw,6.6rem)] font-normal leading-[0.91] tracking-[-0.065em] text-[#191817]">
+              {reduced ? (
+                <>
+                  <span className="block">{line1}</span>
+                  {line2 && <span className="block">{line2}</span>}
+                </>
+              ) : (
+                <>
+                  <SplitHeadline text={line1} delay={0.16} className="block" active />
+                  {line2 && (
+                    <SplitHeadline
+                      text={line2}
+                      delay={0.3}
+                      className="block"
+                      active
+                    />
+                  )}
+                </>
+              )}
+            </h1>
 
-          <h1 className="font-hero text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-white">
-            {introInstant ? (
-              <>
-                <span className="block">{line1}</span>
-                {line2 && <span className="block text-gradient-gold-anim">{line2}</span>}
-              </>
-            ) : (
-              <>
-                <SplitHeadline text={line1} delay={0.15} className="block" active={introComplete} />
-                {line2 && (
-                  <SplitHeadline
-                    text={line2}
-                    delay={0.35}
-                    className="block text-gradient-gold-anim"
-                    active={introComplete}
-                  />
-                )}
-              </>
-            )}
-          </h1>
+            <motion.p
+              {...fade(0.46)}
+              className="mt-7 max-w-md text-[1rem] leading-[1.7] text-[#4f4a45]"
+            >
+              {data.subtitle}
+            </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: introComplete ? 1 : 0, y: introComplete ? 0 : 20 }}
-            transition={{
-              duration: contentDuration ?? 0.8,
-              delay: contentDelay(0.55),
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mt-6 max-w-lg text-base md:text-lg font-normal leading-relaxed text-stone-300"
-          >
-            {data.subtitle}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: introComplete ? 1 : 0, y: introComplete ? 0 : 20 }}
-            transition={{
-              duration: contentDuration ?? 0.8,
-              delay: contentDelay(0.7),
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mt-8 flex flex-col sm:flex-row gap-4"
-          >
-            <Magnetic>
-              <Button onClick={() => scrollToSection("contact")}>{data.ctaPrimary}</Button>
-            </Magnetic>
-            <Magnetic>
+            <motion.div
+              {...fade(0.58)}
+              className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4"
+            >
+              <Button
+                variant="primary"
+                arrow
+                onClick={() => scrollToSection("contact")}
+                className="min-h-[48px] rounded-none bg-[#a96b3d] px-7 text-white hover:bg-[#8f5a32]"
+              >
+                {data.ctaPrimary || "Get a quote"}
+              </Button>
               <Button
                 variant="outline"
-                className="!border-white/30 !bg-white/5 !text-white backdrop-blur-sm hover:!border-kraft hover:!text-kraft-light"
                 onClick={() => scrollToSection("products")}
+                className="min-h-[48px] rounded-none border-0 border-b border-[#191817]/50 px-2 text-[#191817] hover:border-[#a96b3d] hover:text-[#a96b3d]"
               >
-                {data.ctaSecondary}
+                {data.ctaSecondary || "Explore products"}
               </Button>
-            </Magnetic>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: introComplete ? 1 : 0, y: introComplete ? 0 : 20 }}
-            transition={{
-              duration: contentDuration ?? 0.8,
-              delay: contentDelay(0.85),
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mt-12 flex items-stretch gap-8 border-t border-white/10 pt-6"
-          >
-            {(data.stats?.length ? data.stats : []).map((s) => (
-              <div key={s.label}>
-                <div className="font-display text-2xl md:text-3xl font-bold text-white">
-                  <Counter value={s.value} />
-                </div>
-                <div className="mt-1 text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
         </div>
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={reduced ? undefined : { opacity: contentOpacity }}
-      >
-        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">
-          Scroll
-        </span>
-        <span className="h-8 w-px animate-pulse bg-gradient-to-b from-kraft to-transparent" />
-      </motion.div>
-    </motion.section>
+      </div>
+      <motion.ul {...fade(0.75)} className="absolute bottom-7 left-6 flex gap-5 text-[0.58rem] font-medium uppercase tracking-[0.2em] text-[#534d47] md:bottom-9 md:left-8 lg:left-16">
+        {CALLOUTS.map((callout, index) => <li key={callout} className="flex items-center gap-5"><span>{callout}</span>{index < CALLOUTS.length - 1 && <span aria-hidden className="h-4 w-px bg-[#191817]/30" />}</li>)}
+      </motion.ul>
+    </section>
   );
 }

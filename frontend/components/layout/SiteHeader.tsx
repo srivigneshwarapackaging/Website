@@ -1,17 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/lib/ThemeContext";
 import { useJourneyStore } from "@/store/useJourneyStore";
-import { Button } from "@/components/design-system/Button";
-import { Magnetic } from "@/components/motion/MagneticButton";
 import { scrollToSection } from "@/lib/scroll-to";
+import { navTarget } from "@/lib/nav-target";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import type { CompanyContent, SiteSettings } from "@/shared/types/content-types";
 
+/**
+ * Site header — §10
+ * 76px tall, white, logo left / nav right / one copper CTA. On scroll it goes
+ * slightly translucent with a backdrop blur and a hairline bottom border —
+ * no shape change, no pill, no dramatic animation.
+ */
 export function SiteHeader({
   company,
   siteSettings,
@@ -19,42 +24,75 @@ export function SiteHeader({
   company?: CompanyContent;
   siteSettings?: SiteSettings;
 }) {
-  const { isDark, toggleTheme } = useTheme();
   const activeSection = useJourneyStore((s) => s.activeSection);
+  const reduced = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const nav = siteSettings?.nav?.length ? siteSettings.nav : [];
-  const headerCta = siteSettings?.headerCta || "Get quote";
+  // Lock body scroll while the mobile sheet is open.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
 
-  const scrollTo = (id: string) => scrollToSection(id);
+  const nav = siteSettings?.nav?.length
+    ? siteSettings.nav
+    : [
+        { label: "About", id: "about" },
+        { label: "Products", id: "products" },
+        { label: "Lab", id: "/lab" },
+        { label: "Sustainability", id: "sustainability" },
+        { label: "Contact", id: "contact" },
+      ];
+
+  const headerCta = siteSettings?.headerCta || "Get a quote";
+
+  const go = (id: string) => {
+    scrollToSection(id);
+    setOpen(false);
+  };
+
+  // Page-load entrance: logo, then nav items, then CTA (§10).
+  const entrance = (index: number) =>
+    reduced
+      ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+      : {
+          initial: { opacity: 0, y: 6 },
+          animate: { opacity: 1, y: 0 },
+          transition: {
+            duration: 0.5,
+            delay: 0.05 + index * 0.055,
+            ease: [0.16, 1, 0.3, 1] as const,
+          },
+        };
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled ? "py-3" : "py-5"
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        scrolled
+          ? "border-b border-charcoal/[0.07] bg-white/92 backdrop-blur-md"
+          : "border-b border-transparent bg-white"
       )}
     >
-      <div
-        className={cn(
-          "mx-auto flex max-w-6xl items-center justify-between px-6 transition-all duration-500 lg:px-10",
-          scrolled &&
-            "rounded-full border border-stone-200/70 bg-white/85 py-3 shadow-[var(--shadow-panel)] backdrop-blur-xl dark:border-zinc-700/60 dark:bg-zinc-950/85"
-        )}
-      >
-        <button
+      <div className="mx-auto flex h-[72px] w-full max-w-[1400px] items-center justify-between px-6 md:h-[76px] md:px-8 lg:px-16">
+        <motion.button
+          {...entrance(0)}
           type="button"
-          onClick={() => scrollTo("hero")}
-          className="group text-left transition-opacity hover:opacity-90"
-          aria-label={company?.name || "Sri Vigneshwara Packaging"}
+          onClick={() => go("hero")}
+          className="-ml-1 flex items-center rounded-[6px] px-1 py-1 transition-opacity hover:opacity-80"
+          aria-label={`${company?.name || "Sri Vigneshwara Packaging"} — back to top`}
         >
           <span className="hidden sm:inline-flex">
             <BrandLogo logoUrl={company?.logoUrl} variant="header" />
@@ -62,90 +100,117 @@ export function SiteHeader({
           <span className="inline-flex sm:hidden">
             <BrandLogo logoUrl={company?.logoUrl} variant="mark" />
           </span>
-        </button>
+        </motion.button>
 
-        <nav className="hidden md:flex items-center gap-1 rounded-full bg-stone-100/80 p-1 dark:bg-zinc-900/80">
-          {nav.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => scrollTo(item.id)}
+        <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+          {nav.map((item, index) => {
+            const target = navTarget(item);
+            const isActive =
+              target.kind === "section" && activeSection === target.id;
+            const itemClass = cn(
+              "relative flex items-center py-1 text-[0.8rem] font-semibold tracking-[0.02em] transition-colors duration-200",
+              isActive ? "text-copper" : "text-text-secondary hover:text-copper"
+            );
+            const underline = (
+              <span
+                aria-hidden
                 className={cn(
-                  "relative rounded-full px-3.5 py-1.5 text-[9px] font-black uppercase tracking-[0.15em] transition-colors",
-                  isActive
-                    ? "text-accent"
-                    : "text-stone-500 hover:text-stone-900 dark:hover:text-white"
+                  "absolute -bottom-0.5 left-0 h-px bg-copper transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  isActive ? "w-full" : "w-0"
                 )}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full bg-white shadow-sm dark:bg-zinc-800"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
+              />
+            );
+
+            return (
+              <motion.div key={item.id} {...entrance(index + 1)}>
+                {target.kind === "route" ? (
+                  <Link href={target.href} className={itemClass}>
+                    {item.label}
+                    {underline}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => go(target.id)}
+                    aria-current={isActive ? "true" : undefined}
+                    className={itemClass}
+                  >
+                    {item.label}
+                    {underline}
+                  </button>
                 )}
-                <span className="relative">{item.label}</span>
-              </button>
+              </motion.div>
             );
           })}
         </nav>
 
         <div className="flex items-center gap-2">
+          <motion.button
+            {...entrance(nav.length + 1)}
+            type="button"
+            onClick={() => go("contact")}
+            className="group hidden min-h-[44px] items-center gap-2 rounded-[10px] bg-copper px-6 text-[0.8rem] font-semibold tracking-[0.02em] text-white shadow-sm transition-colors duration-[250ms] hover:bg-copper-dark focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-copper sm:inline-flex"
+          >
+            {headerCta}
+            <span aria-hidden className="transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1">
+              →
+            </span>
+          </motion.button>
+
           <button
             type="button"
-            aria-label="Toggle theme"
-            onClick={toggleTheme}
-            className="rounded-full p-2.5 text-stone-600 ring-1 ring-stone-200/60 hover:bg-stone-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-[10px] text-charcoal transition-colors hover:text-copper lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((v) => !v)}
           >
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-          <Magnetic className="hidden md:block" strength={0.5}>
-            <Button
-              variant="primary"
-              className="!px-5 !py-2.5 !text-[10px] !tracking-[0.15em] !uppercase"
-              onClick={() => scrollTo("contact")}
-            >
-              {headerCta}
-            </Button>
-          </Magnetic>
-          <button
-            type="button"
-            className="md:hidden rounded-full p-2 ring-1 ring-stone-200 dark:ring-zinc-700"
-            aria-label="Menu"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
+      {/* Mobile sheet */}
       {open && (
-        <div className="md:hidden mx-6 mt-2 rounded-2xl border border-stone-200 bg-white/95 px-6 py-4 shadow-xl backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/95">
-          {nav.map((item) => (
+        <div
+          id="mobile-nav"
+          className="border-t border-charcoal/[0.07] bg-white lg:hidden"
+        >
+          <nav aria-label="Mobile" className="mx-auto max-w-[1400px] px-6 py-2">
+            {nav.map((item) => {
+              const target = navTarget(item);
+              const rowClass =
+                "flex min-h-[52px] w-full items-center border-b border-charcoal/[0.07] text-left text-base font-semibold text-charcoal last:border-0 hover:text-copper";
+
+              return target.kind === "route" ? (
+                <Link
+                  key={item.id}
+                  href={target.href}
+                  onClick={() => setOpen(false)}
+                  className={rowClass}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => go(target.id)}
+                  className={rowClass}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
             <button
-              key={item.id}
               type="button"
-              onClick={() => {
-                scrollTo(item.id);
-                setOpen(false);
-              }}
-              className="block w-full py-3 text-left text-sm font-bold border-b border-stone-100 last:border-0 dark:border-zinc-800"
+              onClick={() => go("contact")}
+              className="mt-4 mb-5 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-[10px] bg-copper px-6 text-sm font-semibold text-white transition-colors hover:bg-copper-dark"
             >
-              {item.label}
+              {headerCta}
+              <span aria-hidden>→</span>
             </button>
-          ))}
-          <Button
-            variant="primary"
-            className="w-full mt-4"
-            onClick={() => {
-              scrollTo("contact");
-              setOpen(false);
-            }}
-          >
-            {headerCta}
-          </Button>
+          </nav>
         </div>
       )}
     </header>

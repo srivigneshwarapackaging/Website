@@ -4,6 +4,7 @@ import { requireAdminSession } from "@/backend/auth/admin";
 import { normalizeSiteContent } from "@/backend/services/content/normalize-content";
 import { siteContentSchema } from "@/shared/validation/site-content";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
   const authError = await requireAdminSession();
@@ -32,6 +33,7 @@ export async function POST(req: Request) {
       { upsert: true, new: true }
     );
 
+    revalidatePath("/", "layout");
     return NextResponse.json({ success: true, data: updatedContent });
   } catch (error) {
     console.error("Update Error:", error);

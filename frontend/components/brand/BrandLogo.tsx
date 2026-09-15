@@ -1,6 +1,5 @@
 "use client";
 
-import { useId } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -25,8 +24,10 @@ export function BrandMark({
   className?: string;
   gradientId?: string;
 }) {
-  const autoId = useId();
-  const base = gradientId || `brand-${autoId}`;
+  // Keep the SVG gradient IDs deterministic between the server render and
+  // hydration. React's generated useId can shift when the auth error tree is
+  // rendered through a different boundary, producing a hydration mismatch.
+  const base = gradientId || "brand-mark";
   const gTop = `${base}-top`;
   const gLeft = `${base}-left`;
   const gRight = `${base}-right`;

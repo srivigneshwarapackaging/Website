@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
-import path from "path";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  // Lets a production build run without fighting a dev server over `.next`:
+  //   NEXT_DIST_DIR=.next-build npm run build
+  distDir: process.env.NEXT_DIST_DIR || ".next",
+};
 
 export default nextConfig;

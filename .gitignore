@@ -16,6 +16,8 @@
 # next.js
 /.next/
 frontend/.next/
+/.next-build/
+frontend/.next-build/
 /out/
 frontend/out/
 

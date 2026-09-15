@@ -32,7 +32,7 @@ type Attachment = NonNullable<ContactInput["attachment"]>;
 const STEPS = ["Your details", "Product requirements", "Review & send"] as const;
 
 const inputClass =
-  "peer w-full rounded-2xl border border-stone-200/90 bg-white px-4 pb-3 pt-7 text-sm shadow-sm outline-none transition-all focus:border-kraft focus:ring-2 focus:ring-kraft/15 focus:shadow-[0_0_0_4px_rgba(196,165,116,0.1)] dark:border-zinc-700 dark:bg-zinc-950";
+  "peer w-full rounded-[6px] border border-charcoal/15 bg-white px-4 pb-3 pt-7 text-sm outline-none transition-colors focus:border-copper focus:ring-2 focus:ring-copper/15";
 
 const labelClass =
   "pointer-events-none absolute left-4 top-4 origin-left text-sm text-stone-400 transition-all peer-focus:top-2.5 peer-focus:text-[9px] peer-focus:font-black peer-focus:uppercase peer-focus:tracking-[0.22em] peer-focus:text-kraft-dark peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:text-[9px] peer-[:not(:placeholder-shown)]:font-black peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-[0.22em] peer-[:not(:placeholder-shown)]:text-stone-400";
@@ -226,8 +226,8 @@ export function ContactFormWizard({
                       }
                       className={`rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-wider transition-all ${
                         form.ply === opt.value
-                          ? "bg-gradient-to-r from-kraft to-kraft-dark text-charcoal shadow-md"
-                          : "border border-stone-200 bg-white text-stone-500 hover:border-kraft dark:border-zinc-700 dark:bg-zinc-950"
+                          ? "border border-copper bg-copper text-white"
+                          : "border border-charcoal/15 bg-white text-text-secondary hover:border-copper hover:text-copper"
                       }`}
                     >
                       {opt.label}
@@ -270,7 +270,7 @@ export function ContactFormWizard({
                   Confirm everything looks right before sending.
                 </p>
               </div>
-              <dl className="space-y-4 rounded-2xl border border-stone-200/80 bg-white p-5 text-sm dark:border-zinc-700 dark:bg-zinc-950">
+              <dl className="space-y-4 border border-charcoal/10 bg-white p-5 text-sm">
                 <ReviewRow label="Company" value={form.company} />
                 <ReviewRow label="Email" value={form.email} />
                 <ReviewRow label="Ply" value={plyLabel(form.ply)} />

@@ -2,18 +2,23 @@ import { create } from "zustand";
 
 export type JourneySectionId =
   | "hero"
+  | "story"
   | "about"
-  | "process"
   | "products"
   | "sustainability"
   | "contact";
 
 export type ProductVariant = "ply3" | "ply5" | "ply7" | "diecut";
 
+/**
+ * Ordered by their real position on the page. "story" is the scroll narrative
+ * (how a box gets made); it replaced the standalone process section, whose
+ * steps are now the story's captions.
+ */
 export const JOURNEY_SECTIONS: JourneySectionId[] = [
   "hero",
+  "story",
   "about",
-  "process",
   "products",
   "sustainability",
   "contact",
@@ -137,7 +142,7 @@ export const useJourneyStore = create<JourneyState>((set) => ({
       activeSection,
       sectionProgress,
       processStation:
-        activeSection === "process"
+        activeSection === "story"
           ? processStationFromProgress(sectionProgress)
           : 0,
       productVariant:

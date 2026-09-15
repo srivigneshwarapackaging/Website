@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { HomepageEditor } from "@/components/admin/HomepageEditor";
 import { Save, Trash2, Search, X, Download, Sparkles, ExternalLink } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -44,6 +45,7 @@ const messagesFetcher = async (url: string) => {
 };
 
 const PREVIEW_ANCHORS: Record<string, string> = {
+  homepage: "/",
   hero: "/#hero",
   trust: "/",
   about: "/about",
@@ -60,12 +62,11 @@ const PREVIEW_ANCHORS: Record<string, string> = {
 const TABS = [
   { id: "analytics", label: "Analytics" },
   { id: "hero", label: "Hero" },
-  { id: "trust", label: "Trust bar" },
-  { id: "about", label: "About" },
-  { id: "process", label: "Process" },
+  { id: "homepage", label: "Homepage sections" },
+  { id: "trust", label: "Industries" },
+  { id: "about", label: "About & metrics" },
   { id: "products", label: "Products" },
   { id: "sustainability", label: "Eco" },
-  { id: "marquee", label: "Marquee" },
   { id: "contact", label: "Contact" },
   { id: "company", label: "Company" },
   { id: "settings", label: "Site settings" },
@@ -82,13 +83,14 @@ export default function AdminDashboard() {
   );
   const messages = Array.isArray(messagesData) ? messagesData : [];
 
-  const [activeTab, setActiveTab] = useState("analytics");
+  const [activeTab, setActiveTab] = useState("homepage");
   const [timeRange, setTimeRange] = useState("weekly");
   const [visitorCount, setVisitorCount] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
   const [siteData, setSiteData] = useState<SiteContentData>(DEFAULT_SITE_CONTENT);
+  const contentLoaded = useRef(false);
 
   const filteredMessages = useMemo(
     () =>
@@ -120,8 +122,11 @@ export default function AdminDashboard() {
         analyticsData.reduce((acc: number, curr: { views?: number }) => acc + (curr.views || 0), 0)
       );
     }
-    if (contentData && !contentData.error) {
+    if (contentRes.ok && contentData && !contentData.error && !contentLoaded.current) {
       setSiteData(contentData as SiteContentData);
+      contentLoaded.current = true;
+    } else if (!contentRes.ok) {
+      showAdminToast("Could not load saved content. Reload the page before publishing.", "error");
     }
   }, [timeRange]);
 
@@ -131,6 +136,10 @@ export default function AdminDashboard() {
   }, [status, router, loadData]);
 
   const publish = async () => {
+    if (!contentLoaded.current) {
+      showAdminToast("Saved content has not loaded. Reload the page before publishing.", "error");
+      return;
+    }
     setIsSaving(true);
     setValidationErrors({});
     try {
@@ -265,6 +274,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {activeTab === "homepage" && <HomepageEditor data={siteData.homepage} onChange={homepage => setSiteData({ ...siteData, homepage })} />}
         {activeTab === "hero" && (
           <HeroEditor data={siteData.hero} onChange={(hero) => setSiteData({ ...siteData, hero })} />
         )}

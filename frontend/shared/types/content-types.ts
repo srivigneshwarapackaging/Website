@@ -1,3 +1,4 @@
+import { DEFAULT_HOMEPAGE, type HomepageContent } from "./homepage";
 export type PlyType = "3" | "5" | "7" | "diecut";
 
 export type ProcessIcon = "package" | "factory" | "print" | "check";
@@ -138,6 +139,7 @@ export interface CompanyContent {
 }
 
 export interface SiteContentData {
+  homepage: HomepageContent;
   seo: SeoContent;
   siteSettings: SiteSettings;
   hero: HeroContent;
@@ -152,6 +154,7 @@ export interface SiteContentData {
 }
 
 export const DEFAULT_SITE_CONTENT: SiteContentData = {
+  homepage: DEFAULT_HOMEPAGE,
   seo: {
     title: "Sri Vigneshwara Packaging | Premium Corrugated Boxes",
     description:
@@ -159,13 +162,13 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
     ogImage: "",
   },
   siteSettings: {
-    headerCta: "Get quote",
+    headerCta: "Get a quote",
     footerHeadline: "Let's build something durable.",
     nav: [
       { label: "About", id: "about" },
-      { label: "Process", id: "process" },
       { label: "Products", id: "products" },
-      { label: "Eco", id: "sustainability" },
+      { label: "Lab", id: "/lab" },
+      { label: "Sustainability", id: "sustainability" },
       { label: "Contact", id: "contact" },
     ],
     socialLinks: [
@@ -174,77 +177,83 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
     ],
   },
   hero: {
-    eyebrow: "Premium corrugated packaging",
-    title: "Built to Last. Designed to Protect.",
+    eyebrow: "Corrugated packaging · Bengaluru",
+    title: "Packaging made to perform.",
     subtitle:
-      "Premium corrugated packaging solutions that combine strength and sustainability.",
-    ctaPrimary: "Get a Quote",
-    ctaSecondary: "Our Products",
+      "Corrugated packaging engineered for strength, protection and reliable supply — backed by more than 30 years of manufacturing experience.",
+    ctaPrimary: "Get a quote",
+    ctaSecondary: "Explore products",
     imageUrl: "",
-    videoUrl: "/videos/factory.mp4",
+    videoUrl: "",
     stats: [
-      { value: "25+", label: "Years" },
-      { value: "10M+", label: "Boxes / yr" },
-      { value: "ISO", label: "Certified" },
+      { value: "30+", label: "Years of experience" },
+      { value: "200T", label: "Monthly capacity" },
+      { value: "3–7", label: "Ply options" },
     ],
   },
   trustBar: {
     industries: [
-      "FMCG",
-      "E-Commerce",
-      "Pharma",
       "Automotive",
-      "Food & Beverage",
       "Electronics",
-      "Export",
-      "Retail",
+      "FMCG",
+      "Engineering",
+      "E-commerce",
+      "Furniture",
+      "Industrial components",
+      "Pharmaceutical",
     ],
   },
   about: {
     eyebrow: "About us",
-    title: "30 Years of Excellence in Packaging",
+    title: "Three decades of making packaging better.",
     description:
-      "We've been engineering corrugated solutions that protect what matters most. From small startups to Fortune 500 companies, our commitment to quality and innovation has made us a trusted partner across industries.",
+      "Sri Vigneshwara Packaging manufactures corrugated packaging in Bengaluru for businesses with recurring, specification-driven requirements. Construction is selected around your product, load and application — not pulled from a catalogue.",
     pullQuote: "Precision-engineered packaging, built to protect what matters.",
     stats: [
-      { value: "30+", label: "Years Experience" },
-      { value: "10M+", label: "Boxes Annually" },
-      { value: "500+", label: "Happy Clients" },
-      { value: "100%", label: "Recyclable" },
+      { value: "30+", label: "Years of experience" },
+      { value: "200T", label: "Monthly capacity" },
+      { value: "3–7", label: "Ply options" },
+      { value: "Custom", label: "Manufacturing" },
+      { value: "Bengaluru", label: "Based" },
     ],
     imageUrl: "",
   },
   process: {
-    eyebrow: "Manufacturing journey",
-    title: "Our Process",
+    eyebrow: "How we work",
+    title: "From requirement to ready-to-ship.",
     intro:
-      "From raw kraft paper to a delivery-ready carton — every box passes through a controlled, quality-checked process. Scroll to walk the line.",
+      "Every order moves through the same five controlled stages, so repeat requirements arrive to the same specification each time.",
     steps: [
       {
-        title: "Material Selection",
-        description: "Premium kraft paper and recycled fibers",
+        title: "Understand",
+        description: "Your product and packaging requirement.",
         icon: "package",
       },
       {
-        title: "Corrugation",
-        description: "Precise fluting for optimal strength",
-        icon: "factory",
-      },
-      {
-        title: "Printing & Coating",
-        description: "Custom branding with eco-friendly inks",
+        title: "Engineer",
+        description: "Dimensions, ply and flute selection.",
         icon: "print",
       },
       {
-        title: "Quality Control",
-        description: "Rigorous testing at every stage",
+        title: "Manufacture",
+        description: "Corrugation and conversion.",
+        icon: "factory",
+      },
+      {
+        title: "Inspect",
+        description: "Quality and consistency.",
         icon: "check",
+      },
+      {
+        title: "Deliver",
+        description: "Ready for your operation.",
+        icon: "package",
       },
     ],
   },
   products: {
     eyebrow: "Product range",
-    title: "Our Product Range",
+    title: "Packaging for every requirement.",
     description:
       "Engineered ply configurations for every load — from e-commerce cartons to industrial export crates.",
     applications: [
@@ -295,23 +304,23 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
   },
   sustainability: {
     eyebrow: "Sustainability",
-    title: "Committed to Sustainability",
+    title: "Better packaging. Less waste.",
     description:
-      "Every box we produce is 100% recyclable and made from renewable resources.",
+      "Corrugated board is paper-based and recyclable by default. The bigger gain is specifying it correctly — right-sized boxes with the right construction use less material and fail less often in transit.",
     stats: [
-      { stat: "95%", label: "Recycled Content" },
-      { stat: "Zero", label: "Waste to Landfill" },
-      { stat: "Carbon", label: "Neutral Operations" },
+      { stat: "95%", label: "Recycled content" },
+      { stat: "Zero", label: "Waste to landfill" },
+      { stat: "Carbon", label: "Neutral operations" },
     ],
   },
   marqueeCta: {
     label: "Let's build your packaging",
   },
   contact: {
-    eyebrow: "Get in touch",
-    title: "Let's build your packaging.",
+    eyebrow: "Request a quote",
+    title: "Get a packaging solution.",
     description:
-      "Ready for a quote? Tell us your specs and we'll get back to you within 24 hours.",
+      "Tell us what you're shipping. We'll help you determine the right packaging.",
     phone: "+91 9945019279",
     email: "svcatons2015@gmail.com",
     address: "Industrial Area, Bengaluru, India",
@@ -327,7 +336,7 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
       { label: "Quote turnaround", value: "Within 24 hours" },
       { label: "Production lead", value: "5–7 business days" },
     ],
-    formSubmitLabel: "Get your quote",
+    formSubmitLabel: "Get a packaging solution",
     whatsappMessage: "Hi, I'd like a quote for corrugated packaging.",
   },
   company: {
@@ -336,8 +345,9 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
     logoUrl: "",
     gstin: "",
     certifications: [
-      { name: "ISO 9001", imageUrl: "" },
-      { name: "FSC Certified", imageUrl: "" },
+      { name: "ISO certified", imageUrl: "" },
+      { name: "GST registered", imageUrl: "" },
+      { name: "FSC available", imageUrl: "" },
     ],
   },
 };

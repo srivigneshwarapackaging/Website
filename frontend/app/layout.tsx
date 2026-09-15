@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans, Syne } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/lib/ThemeContext";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
 
@@ -24,14 +23,15 @@ const body = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Sri Vigneshwara Packaging | Premium Corrugated Solutions",
+    default: "Sri Vigneshwara Packaging — Corrugated boxes, Bengaluru",
     template: "%s | Sri Vigneshwara Packaging",
   },
   description:
-    "High-performance corrugated manufacturing and sustainable industrial packaging in Bengaluru.",
+    "Corrugated packaging engineered to perform. 3 to 7-ply boxes, export cartons and custom die-cut packaging manufactured in Bengaluru.",
   openGraph: {
     title: "Sri Vigneshwara Packaging",
-    description: "Premium corrugated packaging — built to last, designed to protect.",
+    description:
+      "Corrugated packaging engineered to perform — manufactured in Bengaluru since the 1990s.",
     type: "website",
   },
   icons: {
@@ -46,17 +46,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${display.variable} ${hero.variable} ${body.variable} font-body bg-surface dark:bg-surface-dark text-stone-900 dark:text-stone-50 antialiased`}
+        className={`${display.variable} ${hero.variable} ${body.variable} font-body bg-white text-text-primary antialiased`}
       >
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <NextAuthProvider>
-          <ThemeProvider>
-            <AnalyticsProvider>{children}</AnalyticsProvider>
-          </ThemeProvider>
+          <AnalyticsProvider>{children}</AnalyticsProvider>
         </NextAuthProvider>
       </body>
     </html>
