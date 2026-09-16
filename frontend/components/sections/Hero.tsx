@@ -3,9 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { HeroContent } from "@/shared/types/content-types";
 import { Button } from "@/components/design-system/Button";
-import { SplitHeadline } from "@/components/motion/SplitHeadline";
 import { scrollToSection } from "@/lib/scroll-to";
-import Image from "next/image";
+import { SiteImage as Image } from "@/components/design-system/SiteImage";
 
 /**
  * Hero — §11 / §12 / §13
@@ -63,24 +62,8 @@ export function HeroSection({ data }: { data: HeroContent }) {
             </motion.p>
 
             <h1 className="font-body text-[clamp(3rem,6vw,6.6rem)] font-normal leading-[0.91] tracking-[-0.065em] text-[#191817]">
-              {reduced ? (
-                <>
-                  <span className="block">{line1}</span>
-                  {line2 && <span className="block">{line2}</span>}
-                </>
-              ) : (
-                <>
-                  <SplitHeadline text={line1} delay={0.16} className="block" active />
-                  {line2 && (
-                    <SplitHeadline
-                      text={line2}
-                      delay={0.3}
-                      className="block"
-                      active
-                    />
-                  )}
-                </>
-              )}
+              <span className="block">{line1}</span>
+              {line2 && <span className="block">{line2}</span>}
             </h1>
 
             <motion.p

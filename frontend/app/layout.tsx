@@ -3,6 +3,7 @@ import { Instrument_Serif, Plus_Jakarta_Sans, Syne } from "next/font/google";
 import "./globals.css";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
+import { SITE_URL } from "@/lib/seo";
 
 const display = Instrument_Serif({
   subsets: ["latin"],
@@ -22,6 +23,8 @@ const body = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  robots: { index: true, follow: true },
   title: {
     default: "Sri Vigneshwara Packaging — Corrugated boxes, Bengaluru",
     template: "%s | Sri Vigneshwara Packaging",

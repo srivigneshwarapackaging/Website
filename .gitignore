@@ -18,6 +18,7 @@
 frontend/.next/
 /.next-build/
 frontend/.next-build/
+frontend/.next-seo-build/
 /out/
 frontend/out/
 

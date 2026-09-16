@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SiteImage } from "@/components/design-system/SiteImage";
 import { usePathname } from "next/navigation";
 import type { ProductItem } from "@/shared/types/content-types";
 import { CorrugatedBox } from "@/components/visual/CorrugatedBox";
@@ -58,11 +59,13 @@ export function ProductPickerCard({
 
       {/* Visual */}
       <div className="mt-4 overflow-hidden rounded-[6px] bg-pearl">
-        <div className="flex aspect-[4/3] w-full items-center justify-center">
+        <div className="relative flex aspect-[4/3] w-full items-center justify-center">
           {product.imageUrl ? (
-            <img
+            <SiteImage
               src={product.imageUrl}
               alt={product.name}
+              fill
+              sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 motion-reduce:transform-none motion-reduce:transition-none"
             />

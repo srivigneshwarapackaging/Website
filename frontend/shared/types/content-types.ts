@@ -156,9 +156,9 @@ export interface SiteContentData {
 export const DEFAULT_SITE_CONTENT: SiteContentData = {
   homepage: DEFAULT_HOMEPAGE,
   seo: {
-    title: "Sri Vigneshwara Packaging | Premium Corrugated Boxes",
+    title: "Corrugated Boxes in Bengaluru | Sri Vigneshwara Packaging",
     description:
-      "Industrial corrugated packaging — custom ply boxes, export cartons, and sustainable solutions from Bengaluru.",
+      "Sri Vigneshwara Packaging manufactures 3, 5 and 7-ply corrugated boxes, printed cartons and custom die-cut packaging in Bengaluru. Request a quote.",
     ogImage: "",
   },
   siteSettings: {
@@ -322,7 +322,7 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
     description:
       "Tell us what you're shipping. We'll help you determine the right packaging.",
     phone: "+91 9945019279",
-    email: "svcatons2015@gmail.com",
+    email: "svcartons2015@gmail.com",
     address: "Industrial Area, Bengaluru, India",
     mapUrl: "",
     mapLabel: "Bengaluru, India",

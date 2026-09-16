@@ -17,14 +17,14 @@ import { LabEntry } from "@/components/sections/LabEntry";
 import { Applications } from "@/components/sections/Applications";
 import { SustainabilitySection } from "@/components/sections/Sustainability";
 import type { SiteContentData } from "@/shared/types/content-types";
+import { SITE_URL } from "@/lib/seo";
 
 const SmoothScroll = dynamic(
   () => import("@/components/providers/SmoothScroll").then((m) => m.SmoothScroll),
   { ssr: false }
 );
 const ContactSection = dynamic(
-  () => import("@/components/sections/Contact").then((m) => m.ContactSection),
-  { ssr: false }
+  () => import("@/components/sections/Contact").then((m) => m.ContactSection)
 );
 
 /**
@@ -55,6 +55,10 @@ export function HomeExperience({ content }: { content: SiteContentData }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": `${SITE_URL}/#business`,
+    url: SITE_URL,
+    image: `${SITE_URL}/opengraph-image`,
+    logo: `${SITE_URL}/brand/logo-mark.png`,
     name: content.company.name,
     description: content.hero.subtitle,
     email: content.contact.email,
@@ -66,7 +70,7 @@ export function HomeExperience({ content }: { content: SiteContentData }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <ScrollSpy />
       <PackagingIntro name={content.company.name} tagline={content.company.tagline} />

@@ -18,7 +18,7 @@ const processStepSchema = z.object({
 });
 
 const productItemSchema = z.object({
-  slug: z.string().min(1).max(100),
+  slug: z.string().min(1).max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase words separated by hyphens"),
   name: z.string().min(1).max(200),
   strength: z.string().max(200),
   flute: z.string().max(200),

@@ -2,8 +2,9 @@ import { connectDB } from "@/backend/db/connection";
 import SiteContent from "@/backend/models/SiteContent";
 import { normalizeSiteContent } from "@/backend/services/content/normalize-content";
 import { DEFAULT_SITE_CONTENT, SiteContentData } from "@/shared/types/content-types";
+import { cache } from "react";
 
-export async function getSiteContent(): Promise<SiteContentData> {
+export const getSiteContent = cache(async (): Promise<SiteContentData> => {
   try {
     await connectDB();
     const doc = await SiteContent.findOne({}).sort({ updatedAt: -1 }).lean();
@@ -13,4 +14,4 @@ export async function getSiteContent(): Promise<SiteContentData> {
     console.error("getSiteContent error:", error);
     return DEFAULT_SITE_CONTENT;
   }
-}
+});

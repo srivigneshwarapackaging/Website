@@ -10,6 +10,8 @@ import type { NavLink } from "@/shared/types/content-types";
 const LEGACY_IDS: Record<string, string> = {
   capabilities: "/lab",
   calculator: "/lab#configure",
+  process: "/#material",
+  solutions: "/products",
 };
 
 export type NavTarget =
@@ -17,7 +19,8 @@ export type NavTarget =
   | { kind: "section"; id: string };
 
 export function navTarget(link: Pick<NavLink, "id">): NavTarget {
-  const id = LEGACY_IDS[link.id] ?? link.id;
+  const normalized = link.id.trim().replace(/^#/, "");
+  const id = LEGACY_IDS[normalized] ?? normalized;
   return id.startsWith("/")
     ? { kind: "route", href: id }
     : { kind: "section", id };

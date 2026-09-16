@@ -9,6 +9,7 @@
     "lint": "npm run lint --prefix frontend"
   },
   "dependencies": {
+    "sharp": "^0.34.5",
     "@lottiefiles/dotlottie-react": "^0.17.10",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

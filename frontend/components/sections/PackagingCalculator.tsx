@@ -196,9 +196,9 @@ export function PackagingCalculator({
   ];
 
   return (
-    <div className={cn("grid gap-14 lg:grid-cols-12 lg:gap-12", className)}>
+    <div className={cn("grid min-w-0 grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-12", className)}>
       {/* Heading + controls */}
-      <div className="lg:col-span-7">
+      <div className="min-w-0 lg:col-span-7">
         <Eyebrow>Step 03 · Configure</Eyebrow>
         <h2 className="font-hero text-[clamp(1.75rem,3vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.03em] text-text-primary">
           Build the exact box.
@@ -238,11 +238,11 @@ export function PackagingCalculator({
               </div>
             </div>
 
-            <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {dimensions.map((d) => (
                 <div
                   key={d.axis}
-                  className="rounded-[10px] border border-charcoal/10 bg-white px-4 py-3 transition-colors duration-200 focus-within:border-copper"
+                  className="min-w-0 rounded-[10px] border border-charcoal/10 bg-white px-4 py-3 transition-colors duration-200 focus-within:border-copper"
                 >
                   <label
                     htmlFor={`dim-${d.axis}`}
@@ -381,7 +381,7 @@ export function PackagingCalculator({
       </div>
 
       {/* Live specification */}
-      <div className="lg:col-span-5">
+      <div className="min-w-0 lg:col-span-5">
         <div className="lg:sticky lg:top-28">
           <div className="rounded-[14px] border border-charcoal/10 bg-alabaster p-6 md:p-7">
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-text-muted">
@@ -393,6 +393,7 @@ export function PackagingCalculator({
               <svg
                 width="280"
                 height="200"
+                className="max-w-full"
                 viewBox="0 0 280 200"
                 role="img"
                 aria-label={`Proportional preview of a ${length} by ${width} by ${height} ${unit} box`}

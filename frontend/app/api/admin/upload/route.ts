@@ -3,6 +3,7 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { requireAdminSession } from "@/backend/auth/admin";
 import { NextResponse } from "next/server";
+import sharp from "sharp";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED = new Set([
@@ -36,12 +37,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "File must be under 5 MB" }, { status: 400 });
     }
 
-    const ext = path.extname(file.name) || (file.type === "video/mp4" ? ".mp4" : ".jpg");
+    const isStillImage = ["image/jpeg", "image/png", "image/webp"].includes(file.type);
+    const ext = isStillImage ? ".webp" : file.type === "video/mp4" ? ".mp4" : ".gif";
     const filename = `${randomUUID()}${ext}`;
     const uploadsDir = path.join(process.cwd(), "public", "uploads");
     await mkdir(uploadsDir, { recursive: true });
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const original = Buffer.from(await file.arrayBuffer());
+    const buffer = isStillImage
+      ? await sharp(original, { limitInputPixels: 40_000_000 }).rotate().resize({ width: 1920, withoutEnlargement: true }).webp({ quality: 82 }).toBuffer()
+      : original;
     await writeFile(path.join(uploadsDir, filename), buffer);
 
     return NextResponse.json({ url: `/uploads/${filename}` });

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SiteImage as Image } from "@/components/design-system/SiteImage";
 import { cn } from "@/lib/utils";
 
 const GOLD = {

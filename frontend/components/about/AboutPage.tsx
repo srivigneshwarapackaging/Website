@@ -50,7 +50,7 @@ export function AboutPage({ content }: { content: SiteContentData }) {
       <SmoothScroll />
 
       <div className="sticky top-0 z-50 border-b border-stone-200/80 bg-white/80 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/80">
-        <Container className="flex items-center justify-between py-5">
+        <Container className="flex flex-wrap items-center justify-between gap-3 py-5">
           <Link
             href="/"
             className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-500 transition-colors hover:text-accent"
@@ -58,7 +58,7 @@ export function AboutPage({ content }: { content: SiteContentData }) {
           >
             ← Home
           </Link>
-          <span className="font-display text-sm font-bold">{company.name}</span>
+          <span className="hidden font-display text-sm font-bold sm:inline">{company.name}</span>
           <Magnetic>
             <Link href="/#contact" data-cursor="link">
               <Button className="!px-5 !py-2.5 !text-xs">Get quote</Button>
@@ -67,7 +67,7 @@ export function AboutPage({ content }: { content: SiteContentData }) {
         </Container>
       </div>
 
-      <main className="relative z-10 bg-surface dark:bg-surface-dark">
+      <main id="main-content" className="relative z-10 bg-surface dark:bg-surface-dark">
         <section className="relative overflow-hidden py-20 md:py-28">
           <div
             aria-hidden
@@ -79,7 +79,7 @@ export function AboutPage({ content }: { content: SiteContentData }) {
           />
           <Container className="relative">
             <Eyebrow>{about.eyebrow}</Eyebrow>
-            <DisplayHeading className="max-w-3xl">
+            <DisplayHeading as="h1" className="max-w-3xl">
               <SplitHeadline text={about.title} />
             </DisplayHeading>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-stone-500 dark:text-stone-400">

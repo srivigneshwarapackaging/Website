@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { getSiteContent } from "@/backend/services/content/get-site-content";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
   const content = await getSiteContent();
-  return {
-    title: `Terms of Use | ${content.company.name}`,
-    description: `Terms of use for ${content.company.name}.`,
-  };
+  return pageMetadata("Terms of Use", `Website terms for ${content.company.name}, including product specifications, packaging inquiries and quotations.`, "/terms");
 }
 
 export default async function TermsPage() {
@@ -14,7 +12,7 @@ export default async function TermsPage() {
   const { company, contact } = content;
 
   return (
-    <main className="min-h-screen bg-charcoal text-stone-300">
+    <main id="main-content" className="min-h-screen bg-charcoal text-stone-300">
       <div className="mx-auto max-w-3xl px-6 py-24 lg:px-10">
         <Link href="/" className="text-xs font-bold uppercase tracking-[0.2em] text-kraft-light hover:text-white">
           ← Back to site

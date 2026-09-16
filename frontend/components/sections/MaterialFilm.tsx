@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import { SiteImage as Image } from "@/components/design-system/SiteImage";
 import { motion, useReducedMotion } from "framer-motion";
-import { scrollToSection } from "@/lib/scroll-to";
+import Link from "next/link";
 
 
 export function MaterialFilm({ data }: { data: import("@/shared/types/homepage").HomepageContent }) {
@@ -36,7 +36,7 @@ export function MaterialFilm({ data }: { data: import("@/shared/types/homepage")
             {materials.map((material, index) => (
               <motion.figure key={material.name} {...reveal(index + 1)} className="group">
                 <div className="relative aspect-[4/5] overflow-hidden bg-[#191817]">
-                  <Image src={material.src} alt={material.name} fill sizes="(min-width: 1024px) 25vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.035] motion-reduce:transform-none" />
+                  <Image src={material.src} alt={`${material.name} — ${material.detail}`} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.035] motion-reduce:transform-none" />
                 </div>
                 <figcaption className="mt-4 flex gap-3 text-[0.62rem] font-medium uppercase tracking-[0.18em] text-[#f5f1e8]">
                   <span className="text-[#a96b3d]">{material.number}</span>
@@ -60,9 +60,9 @@ export function MaterialFilm({ data }: { data: import("@/shared/types/homepage")
               <p className="mt-7 max-w-md text-[1rem] leading-[1.7] text-white/65">
                 {data.solutions.description}
               </p>
-              <button type="button" onClick={() => scrollToSection("products")} className="mt-9 border-b border-[#d5a578] pb-2 text-sm font-medium text-[#f5f1e8] transition-colors hover:text-[#d5a578] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d5a578]">
+              <Link href="/products" className="mt-9 inline-flex min-h-11 items-center border-b border-[#d5a578] pb-2 text-sm font-medium text-[#f5f1e8] transition-colors hover:text-[#d5a578] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d5a578]">
                 {data.solutions.cta} <span aria-hidden className="ml-2">→</span>
-              </button>
+              </Link>
             </div>
           </div>
           <div className="relative min-h-[420px] overflow-hidden">

@@ -12,7 +12,7 @@ export function PackagingIntro({ name, tagline }: { name: string; tagline: strin
   const skip = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.location.hash || window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
     try { if (sessionStorage.getItem("svp-intro-seen")) return; } catch { /* Storage can be disabled. */ }
     const previousFocus = document.activeElement;
     const overflow = document.body.style.overflow;
@@ -32,7 +32,7 @@ export function PackagingIntro({ name, tagline }: { name: string; tagline: strin
       if (main) main.inert = wasInert;
       if (previousFocus instanceof HTMLElement) previousFocus.focus({ preventScroll: true });
     };
-    const timer = window.setTimeout(finish, 4800);
+    const timer = window.setTimeout(finish, 1200);
     const keydown = (event: KeyboardEvent) => {
       if (!active) return;
       if (event.key === "Escape") finish();
@@ -69,11 +69,11 @@ export function PackagingIntro({ name, tagline }: { name: string; tagline: strin
     </div>
     <button ref={skip} onClick={() => document.dispatchEvent(new Event("svp-skip-intro"))} className="absolute right-6 bottom-6 min-h-11 px-4 text-xs uppercase tracking-[0.2em] text-[#e8d5b7] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c4a574]">Skip intro →</button>
     <style>{`
-      .svp-intro { animation: svp-intro-exit .8s 4s both; }
+      .svp-intro { animation: svp-intro-exit .3s .9s both; }
       .svp-intro-row { display:flex; width:max-content; animation:svp-intro-roll 28s linear infinite; }
       .svp-intro-reverse { animation-direction:reverse; }
-      .svp-intro-words { animation:svp-intro-dim 1s 1.5s both; }
-      .svp-intro-brand { animation:svp-intro-brand .8s 1.8s both; }
+      .svp-intro-words { animation:svp-intro-dim .3s .1s both; }
+      .svp-intro-brand { animation:svp-intro-brand .3s .15s both; }
       @keyframes svp-intro-roll { to { transform:translateX(-50%); } }
       @keyframes svp-intro-dim { from { opacity:.45; } to { opacity:.05; filter:blur(6px); } }
       @keyframes svp-intro-brand { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }

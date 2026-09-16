@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SiteImage } from "@/components/design-system/SiteImage";
 import { motion, useReducedMotion } from "framer-motion";
 import type { AboutContent } from "@/shared/types/content-types";
 import { Eyebrow } from "@/components/design-system/Eyebrow";
@@ -68,12 +69,13 @@ export function AboutSection({
           whileInView={reduced ? undefined : { opacity: 1 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 overflow-hidden rounded-[14px] border border-charcoal/10 md:mt-20"
+          className="relative mt-16 h-[320px] overflow-hidden rounded-[14px] border border-charcoal/10 md:mt-20 md:h-[480px]"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <SiteImage
             src={data.imageUrl}
             alt="Corrugated board being manufactured at the Bengaluru facility"
+            fill
+            sizes="(min-width: 1400px) 1280px, 100vw"
             className="h-[320px] w-full object-cover md:h-[480px]"
             loading="lazy"
           />

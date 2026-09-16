@@ -68,7 +68,7 @@ export function SmoothScroll({ enabled = true }: { enabled?: boolean }) {
     if (
       !enabled ||
       typeof window === "undefined" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches
     ) {
       return;
     }

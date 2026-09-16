@@ -129,15 +129,15 @@ export function SiteHeader({
                     {underline}
                   </Link>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => go(target.id)}
+                  <a
+                    href={`/#${target.id}`}
+                    onClick={() => setOpen(false)}
                     aria-current={isActive ? "true" : undefined}
                     className={itemClass}
                   >
                     {item.label}
                     {underline}
-                  </button>
+                  </a>
                 )}
               </motion.div>
             );
@@ -174,7 +174,7 @@ export function SiteHeader({
       {open && (
         <div
           id="mobile-nav"
-          className="border-t border-charcoal/[0.07] bg-white lg:hidden"
+          className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-charcoal/[0.07] bg-white lg:hidden"
         >
           <nav aria-label="Mobile" className="mx-auto max-w-[1400px] px-6 py-2">
             {nav.map((item) => {
@@ -192,14 +192,14 @@ export function SiteHeader({
                   {item.label}
                 </Link>
               ) : (
-                <button
+                <a
                   key={item.id}
-                  type="button"
-                  onClick={() => go(target.id)}
+                  href={`/#${target.id}`}
+                  onClick={() => setOpen(false)}
                   className={rowClass}
                 >
                   {item.label}
-                </button>
+                </a>
               );
             })}
             <button

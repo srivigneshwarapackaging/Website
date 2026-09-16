@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { getSiteContent } from "@/backend/services/content/get-site-content";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
   const content = await getSiteContent();
-  return {
-    title: `Privacy Policy | ${content.company.name}`,
-    description: `Privacy policy for ${content.company.name}.`,
-  };
+  return pageMetadata("Privacy Policy", `How ${content.company.name} handles website inquiry details, personal information and analytics.`, "/privacy");
 }
 
 export default async function PrivacyPage() {
@@ -14,7 +12,7 @@ export default async function PrivacyPage() {
   const { company, contact } = content;
 
   return (
-    <main className="min-h-screen bg-charcoal text-stone-300">
+    <main id="main-content" className="min-h-screen bg-charcoal text-stone-300">
       <div className="mx-auto max-w-3xl px-6 py-24 lg:px-10">
         <Link href="/" className="text-xs font-bold uppercase tracking-[0.2em] text-kraft-light hover:text-white">
           ← Back to site

@@ -176,7 +176,8 @@ function normalizeContact(raw: Record<string, unknown> | undefined) {
     title: (raw.title as string) || base.title,
     description: (raw.description as string) || base.description,
     phone: (raw.phone as string) || base.phone,
-    email: (raw.email as string) || base.email,
+    // Correct the known legacy seed typo; preserve any other CMS email.
+    email: raw.email === "svcatons2015@gmail.com" ? "svcartons2015@gmail.com" : (raw.email as string) || base.email,
     address: (raw.address as string) || base.address,
     mapUrl: (raw.mapUrl as string) || base.mapUrl,
     mapLabel: (raw.mapLabel as string) || base.mapLabel,
