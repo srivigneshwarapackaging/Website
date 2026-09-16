@@ -18,6 +18,7 @@ import { Applications } from "@/components/sections/Applications";
 import { SustainabilitySection } from "@/components/sections/Sustainability";
 import type { SiteContentData } from "@/shared/types/content-types";
 import { SITE_URL } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 const SmoothScroll = dynamic(
   () => import("@/components/providers/SmoothScroll").then((m) => m.SmoothScroll),
@@ -52,7 +53,10 @@ const ContactSection = dynamic(
  * closing ask.
  */
 export function HomeExperience({ content }: { content: SiteContentData }) {
-  const jsonLd = {
+  const sameAs = (content.siteSettings.socialLinks || [])
+    .map((link) => link.url?.trim())
+    .filter((url): url is string => Boolean(url && /^https:\/\//i.test(url)));
+  const localBusiness = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": `${SITE_URL}/#business`,
@@ -63,15 +67,29 @@ export function HomeExperience({ content }: { content: SiteContentData }) {
     description: content.hero.subtitle,
     email: content.contact.email,
     telephone: content.contact.phone,
-    address: content.contact.address,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: content.contact.address,
+      addressLocality: "Bengaluru",
+      addressRegion: "Karnataka",
+      addressCountry: "IN",
+    },
+    areaServed: "Bengaluru, Karnataka, India",
+    ...(sameAs.length ? { sameAs } : {}),
+  };
+  const webSite = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: content.company.name,
+    publisher: { "@id": `${SITE_URL}/#business` },
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      <JsonLd data={localBusiness} />
+      <JsonLd data={webSite} />
       <ScrollSpy />
       <PackagingIntro name={content.company.name} tagline={content.company.tagline} />
       <SmoothScroll enabled />

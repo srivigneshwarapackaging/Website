@@ -84,3 +84,13 @@ From `frontend`: `npm run lint`, `npx tsc --noEmit`, `npm run build`, and `npm r
 - Five main packaging photographs: 10,329,296 source bytes to 633,410 WebP bytes (about 94% smaller). Originals retained for compatibility. This is asset compression, not a measured LCP improvement.
 - Lint has five pre-existing warnings in dashboard memo dependencies, unused catch variables and a database eslint comment; no source errors. Next.js also reports the existing middleware-to-proxy deprecation.
 - These changes have not been pushed or deployed. Live field Core Web Vitals, Google indexing, external listing accuracy and authenticated production uploads remain outside the completed local checks.
+
+## Follow-up verification — 16 September 2026
+
+- The new product catalogue uses 26 compressed WebP photographs across four product families, with responsive Next.js image delivery and descriptive alt text.
+- Product-page title and description now match the photographed box and tray range instead of the older generic catalogue.
+- Robots now explicitly excludes `/auth/` in addition to admin and API routes; private pages retain `noindex` while every public page remains indexable.
+- LocalBusiness markup now uses a PostalAddress and factual service area. WebSite and inner-page BreadcrumbList markup were added without ratings, reviews, prices or other unsupported claims.
+- All six public pages passed the rendered metadata, canonical, indexing, H1, heading-order, alt text, internal-link, sitemap, robots, OG image and structured-data audit.
+- The product page had no horizontal overflow at 320px, 375px or 1440px, loaded with one H1, and produced no browser console errors.
+- Production build, TypeScript and lint passed. HTTPS/www redirects returned permanent 308 responses and the canonical page returned HSTS, nosniff and strict-origin referrer headers.

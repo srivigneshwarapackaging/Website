@@ -24,6 +24,7 @@ const productItemSchema = z.object({
   flute: z.string().max(200),
   use: z.string().max(500),
   imageUrl: z.string().max(2000).optional(),
+  gallery: z.array(z.string().max(2000)).max(12).optional(),
   ply: z.enum(["3", "5", "7", "diecut"]),
 });
 

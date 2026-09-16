@@ -57,9 +57,22 @@ assert(og.headers.get("content-type")?.startsWith("image/"));
 assert((await og.arrayBuffer()).byteLength > 1000);
 const schemas = [...pages.get("/").matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
 assert(schemas.length > 0, "Missing business schema");
-for (const block of schemas) {
-  const schema = JSON.parse(block[1]);
-  assert.equal(schema.url, canonicalOrigin);
-  assert.equal(schema["@type"], "LocalBusiness");
+const homepageSchemas = schemas.map((block) => JSON.parse(block[1]));
+const business = homepageSchemas.find((schema) => schema["@type"] === "LocalBusiness");
+const website = homepageSchemas.find((schema) => schema["@type"] === "WebSite");
+assert(business, "Missing LocalBusiness schema");
+assert(website, "Missing WebSite schema");
+assert.equal(business.url, canonicalOrigin);
+assert.equal(website.url, canonicalOrigin);
+for (const route of ["/about", "/products", "/lab"]) {
+  const routeSchemas = [
+    ...pages.get(route).matchAll(
+      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
+    ),
+  ].map((block) => JSON.parse(block[1]));
+  assert(
+    routeSchemas.some((schema) => schema["@type"] === "BreadcrumbList"),
+    `${route}: missing breadcrumb schema`
+  );
 }
-console.log("PASS internal links, anchors, sitemap, robots, private-page noindex, OG image and business schema");
+console.log("PASS internal links, anchors, sitemap, robots, private-page noindex, OG image and structured data");

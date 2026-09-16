@@ -114,8 +114,8 @@ export function ProductCataloguePage({ content }: { content: SiteContentData }) 
               {content.products.title}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
-              Every ply configuration we manufacture, with the load and flute
-              specification for each.
+              The main box and tray formats we manufacture, with the construction,
+              use case and supporting examples for each.
             </p>
           </Container>
         </section>

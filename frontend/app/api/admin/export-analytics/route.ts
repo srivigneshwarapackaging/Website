@@ -29,7 +29,7 @@ export async function GET() {
         "Content-Disposition": "attachment; filename=analytics_report.csv",
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Export failed" }, { status: 500 });
   }
 }

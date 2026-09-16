@@ -44,6 +44,10 @@ export function ProductPickerCard({
     { term: "Flute", value: product.flute },
     { term: "Typical use", value: product.use },
   ];
+  const galleryImages =
+    product.gallery
+      ?.filter((src) => src && src !== product.imageUrl)
+      .slice(0, 3) ?? [];
 
   return (
     <article className="group flex h-full flex-col rounded-[10px] border border-charcoal/10 bg-white p-5 transition-colors duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-copper/45">
@@ -76,6 +80,26 @@ export function ProductPickerCard({
           )}
         </div>
       </div>
+
+      {galleryImages.length > 0 && (
+        <div className="mt-2 grid grid-cols-3 gap-2" aria-label={`${product.name} examples`}>
+          {galleryImages.map((src, galleryIndex) => (
+            <div
+              key={src}
+              className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-pearl"
+            >
+              <SiteImage
+                src={src}
+                alt={`${product.name} example ${galleryIndex + 2}`}
+                fill
+                sizes="96px"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       <h3 className="mt-5 font-hero text-xl font-bold leading-[1.15] tracking-[-0.02em] text-text-primary">
         {product.name}

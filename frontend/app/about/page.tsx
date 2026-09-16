@@ -1,6 +1,7 @@
 import { getSiteContent } from "@/backend/services/content/get-site-content";
 import { AboutPage as AboutPageView } from "@/components/about/AboutPage";
-import { pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
   const content = await getSiteContent();
@@ -9,5 +10,15 @@ export async function generateMetadata() {
 
 export default async function AboutRoute() {
   const content = await getSiteContent();
-  return <AboutPageView content={content} />;
+  return (
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
+      <AboutPageView content={content} />
+    </>
+  );
 }

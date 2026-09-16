@@ -37,7 +37,7 @@ export function ProductCatalogue({
   return (
     <div className="mt-14">
       <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-text-muted">
-        Which construction do you need?
+        Product families
       </h2>
 
       <div className={`mt-6 ${gridCols}`}>

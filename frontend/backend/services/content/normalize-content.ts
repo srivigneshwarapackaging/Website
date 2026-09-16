@@ -125,10 +125,7 @@ function normalizeProducts(raw: unknown) {
           : base.applications,
       items:
         Array.isArray(obj.items) && obj.items.length
-          ? obj.items.map((item, i) => ({
-              ...item,
-              slug: item.slug || slugify(item.name || `product-${i}`),
-            }))
+          ? normalizeProductItems(obj.items, base.items)
           : base.items,
     };
   }
@@ -137,19 +134,38 @@ function normalizeProducts(raw: unknown) {
     const plyOrder: PlyType[] = ["3", "5", "7", "diecut"];
     return {
       ...base,
-      items: raw.map((item: Record<string, unknown>, i) => ({
+      items: normalizeProductItems(raw as LegacyProductItem[], base.items).map((item, i) => ({
         slug: slugify(String(item.name || `product-${i}`)),
         name: String(item.name || base.items[i]?.name || "Product"),
         strength: String(item.strength || base.items[i]?.strength || ""),
         flute: String(item.flute || base.items[i]?.flute || ""),
         use: String(item.use || base.items[i]?.use || ""),
-        imageUrl: String(item.imageUrl || item.image || ""),
+        imageUrl: String(item.imageUrl || ("image" in item ? item.image : "") || ""),
+        gallery: Array.isArray(item.gallery) ? item.gallery : undefined,
         ply: (item.ply as PlyType) || plyOrder[i] || "3",
       })),
     };
   }
 
   return base;
+}
+
+const legacyProductSlugs = new Set(["3-ply", "5-ply", "7-ply", "die-cut"]);
+
+type LegacyProductItem = ProductItem & { image?: unknown };
+
+function normalizeProductItems(items: LegacyProductItem[], fallback: ProductItem[]) {
+  const normalized = items.map((item, i) => ({
+    ...item,
+    slug: item.slug || slugify(item.name || `product-${i}`),
+    gallery: Array.isArray(item.gallery) ? item.gallery.filter(Boolean) : undefined,
+  }));
+
+  const looksLikeLegacyDefault =
+    normalized.length === 4 &&
+    normalized.every((item) => legacyProductSlugs.has(item.slug));
+
+  return looksLikeLegacyDefault ? fallback : normalized;
 }
 
 function normalizeSustainability(raw: Record<string, unknown> | undefined) {

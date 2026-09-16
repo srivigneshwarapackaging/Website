@@ -81,7 +81,10 @@ export default function AdminDashboard() {
     status === "authenticated" ? "/api/admin/get-messages" : null,
     messagesFetcher
   );
-  const messages = Array.isArray(messagesData) ? messagesData : [];
+  const messages = useMemo(
+    () => (Array.isArray(messagesData) ? messagesData : []),
+    [messagesData]
+  );
 
   const [activeTab, setActiveTab] = useState("homepage");
   const [timeRange, setTimeRange] = useState("weekly");

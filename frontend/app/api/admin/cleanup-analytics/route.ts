@@ -38,7 +38,7 @@ export async function GET() {
         patchedTimestamps: fixedTimestamps.modifiedCount,
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Cleanup failed" }, { status: 500 });
   }
 }

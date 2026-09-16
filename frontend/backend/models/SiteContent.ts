@@ -23,6 +23,7 @@ const ProductItemSchema = new mongoose.Schema(
     flute: String,
     use: String,
     imageUrl: String,
+    gallery: [String],
     ply: { type: String, enum: ["3", "5", "7", "diecut"] },
   },
   { _id: false }

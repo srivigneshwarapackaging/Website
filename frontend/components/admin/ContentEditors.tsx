@@ -348,6 +348,7 @@ export function ProductsEditor({
           use: "",
           ply: "3" as ProductItem["ply"],
           imageUrl: "",
+          gallery: [],
         })}
         renderItem={(item, _i, update) => (
           <>
@@ -369,6 +370,19 @@ export function ProductsEditor({
               label="Image URL"
               value={item.imageUrl || ""}
               onChange={(v) => update({ imageUrl: v } as Partial<ProductItem>)}
+            />
+            <Field
+              label="Gallery URLs (one per line)"
+              value={(item.gallery || []).join("\n")}
+              onChange={(v) =>
+                update({
+                  gallery: v
+                    .split("\n")
+                    .map((line) => line.trim())
+                    .filter(Boolean),
+                } as Partial<ProductItem>)
+              }
+              textarea
             />
             <label className="text-[10px] font-black uppercase tracking-[0.28em] text-stone-500">
               Ply type
