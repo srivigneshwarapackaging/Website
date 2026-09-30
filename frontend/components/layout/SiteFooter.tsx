@@ -178,6 +178,12 @@ export function SiteFooter({
             </address>
 
             <div className="mt-4 flex flex-col items-start gap-2">
+              <a
+                href="/contact#help"
+                className="text-[0.875rem] font-semibold text-copper transition-colors hover:text-copper-dark"
+              >
+                Get help →
+              </a>
               <Link
                 href="/contact"
                 className="text-[0.875rem] font-semibold text-copper transition-colors hover:text-copper-dark"

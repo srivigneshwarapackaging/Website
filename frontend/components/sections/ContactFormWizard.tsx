@@ -67,9 +67,13 @@ async function readAttachment(file: File): Promise<Attachment> {
 export function ContactFormWizard({
   onSent,
   submitLabel = "Get your quote",
+  supportEmail,
+  supportPhone,
 }: {
   onSent: (email: string) => void;
   submitLabel?: string;
+  supportEmail: string;
+  supportPhone: string;
 }) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({
@@ -124,7 +128,7 @@ export function ContactFormWizard({
       if (!res.ok) throw new Error("Failed");
       onSent(form.email.trim());
     } catch {
-      setSubmitError("Could not send. Please try again or email us directly.");
+      setSubmitError("We could not send your enquiry. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -286,8 +290,8 @@ export function ContactFormWizard({
                 </div>
               </dl>
               {submitError && (
-                <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-950/30">
-                  {submitError}
+                <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-950/30">
+                  {submitError} You can also <a href={`mailto:${supportEmail}`} className="font-semibold underline underline-offset-2">email us</a> or <a href={`tel:${supportPhone.replace(/\s/g, "")}`} className="font-semibold underline underline-offset-2">call {supportPhone}</a>.
                 </p>
               )}
               <p className="text-xs leading-relaxed text-stone-500">

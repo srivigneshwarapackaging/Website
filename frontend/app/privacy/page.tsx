@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSiteContent } from "@/backend/services/content/get-site-content";
 import { LegalPageFrame } from "@/components/legal/LegalPageFrame";
 import { pageMetadata } from "@/lib/seo";
@@ -166,6 +167,7 @@ export default async function PrivacyPage() {
               {" "}or <a href="mailto:svpcorrugators@gmail.com">svpcorrugators@gmail.com</a>.
               You can also call <a href={`tel:${contact.phone.replace(/\s/g, "")}`}>{contact.phone}</a>.
               Please mention &ldquo;Privacy request&rdquo; and enough detail to identify your enquiry.
+              For other ways to reach us, see <Link href="/contact#privacy-help">privacy help</Link>.
             </p>
           </section>
     </LegalPageFrame>

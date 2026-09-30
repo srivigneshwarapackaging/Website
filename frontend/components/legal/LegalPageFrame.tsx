@@ -77,7 +77,7 @@ export function LegalPageFrame({
         <div className="border-t border-charcoal/10 bg-pearl/60">
           <div className="mx-auto flex w-full max-w-[1160px] flex-wrap items-center justify-between gap-5 px-6 py-9 text-sm text-text-secondary lg:px-10">
             <p>Need help with something on this page?</p>
-            <Link href="/contact" className="font-semibold text-copper-dark underline underline-offset-4 transition-colors hover:text-charcoal">Contact our team <span aria-hidden="true">↗</span></Link>
+            <Link href="/contact#help" className="font-semibold text-copper-dark underline underline-offset-4 transition-colors hover:text-charcoal">Get help <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
       </main>

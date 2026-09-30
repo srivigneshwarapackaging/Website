@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSiteContent } from "@/backend/services/content/get-site-content";
 import { LegalPageFrame } from "@/components/legal/LegalPageFrame";
 import { pageMetadata } from "@/lib/seo";
@@ -52,7 +53,7 @@ export default async function TermsPage() {
               For terms-related questions:{" "}
               <a href={`mailto:${contact.email}`}>
                 {contact.email}
-              </a>
+              </a>. For packaging, order or website problems, see our <Link href="/contact#help">Get help options</Link>.
             </p>
           </section>
     </LegalPageFrame>

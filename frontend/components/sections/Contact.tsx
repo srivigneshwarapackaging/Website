@@ -63,7 +63,7 @@ export function ContactSection({
           </aside>
           <div className="bg-alabaster px-6 py-10 md:px-10 md:py-12 lg:px-12">
             <AnimatePresence mode="wait">
-              {!sent ? <motion.div key="wizard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><ContactFormWizard submitLabel={data.formSubmitLabel} onSent={(email) => { setSentEmail(email); setSent(true); }} /></motion.div> :
+              {!sent ? <motion.div key="wizard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><ContactFormWizard submitLabel={data.formSubmitLabel} supportEmail={data.email} supportPhone={data.phone} onSent={(email) => { setSentEmail(email); setSent(true); }} /></motion.div> :
                 <motion.div key="done" className="flex min-h-[380px] max-w-md flex-col justify-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}><CheckCircle2 size={36} className="text-eco" /><p className="mt-6 font-technical text-copper">Request received</p><h3 className="mt-3 font-hero text-3xl font-bold leading-tight tracking-[-0.03em] text-charcoal">We’ll be in touch.</h3><p className="mt-4 text-base leading-relaxed text-text-secondary">We’ll send your packaging recommendation and quote to <span className="font-semibold text-charcoal">{sentEmail}</span> within 24 hours.</p><button type="button" onClick={() => setSent(false)} className="mt-8 w-fit border-b border-copper pb-1 text-sm font-semibold text-charcoal transition-colors hover:text-copper focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-copper">Send another inquiry</button></motion.div>}
             </AnimatePresence>
           </div>
