@@ -64,7 +64,14 @@ export default async function ContactPage() {
           </div>
         </section>
 
-        <section id="help" className="scroll-mt-8 border-b border-charcoal/10 bg-alabaster">
+        <section id="contact" className="scroll-mt-8 bg-[#f5f1e8]">
+          <div className="mx-auto w-full max-w-[1400px] px-6 py-14 md:px-8 md:py-20 lg:px-16 lg:py-24">
+            <h2 className="sr-only">Contact details and quote form</h2>
+            <ContactSection data={contact} showIntro={false} />
+          </div>
+        </section>
+
+        <section id="help" className="scroll-mt-8 border-t border-charcoal/10 bg-alabaster">
           <div className="mx-auto w-full max-w-[1160px] px-6 py-16 sm:py-20 lg:px-10 lg:py-24">
             <p className="flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-copper-dark">
               <span aria-hidden="true" className="h-px w-7 bg-copper" />Support
@@ -73,7 +80,7 @@ export default async function ContactPage() {
               How can we help?
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-text-secondary">
-              Choose the right way to reach us. The quote form below is for new packaging enquiries.
+              For a new packaging quote, use the form above. For other issues, choose the right way to reach us below.
             </p>
 
             <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -110,13 +117,6 @@ export default async function ContactPage() {
                 </div>
               </article>
             </div>
-          </div>
-        </section>
-
-        <section id="contact" className="scroll-mt-8 bg-[#f5f1e8]">
-          <div className="mx-auto w-full max-w-[1400px] px-6 py-14 md:px-8 md:py-20 lg:px-16 lg:py-24">
-            <h2 className="sr-only">Contact details and quote form</h2>
-            <ContactSection data={contact} showIntro={false} />
           </div>
         </section>
       </main>
