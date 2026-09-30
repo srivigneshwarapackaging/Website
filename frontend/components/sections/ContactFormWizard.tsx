@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -289,6 +290,13 @@ export function ContactFormWizard({
                   {submitError}
                 </p>
               )}
+              <p className="text-xs leading-relaxed text-stone-500">
+                We use these details to respond to your packaging enquiry. Read our{" "}
+                <Link href="/privacy" className="font-semibold text-copper underline underline-offset-2 hover:text-copper-dark">
+                  Privacy Policy
+                </Link>
+                {" "}for storage, sharing and deletion information.
+              </p>
             </>
           )}
         </motion.div>
