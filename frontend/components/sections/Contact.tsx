@@ -14,22 +14,30 @@ import { whatsappUrl } from "@/lib/whatsapp";
 const TRUST_ICONS: LucideIcon[] = [Clock, Package, CheckCircle2];
 
 /** A practical split contact surface: information first, quote form second. */
-export function ContactSection({ data }: { data: ContactContent }) {
+export function ContactSection({
+  data,
+  showIntro = true,
+}: {
+  data: ContactContent;
+  showIntro?: boolean;
+}) {
   const [sent, setSent] = useState(false);
   const [sentEmail, setSentEmail] = useState("");
   const waLink = whatsappUrl(data.phone, data.whatsappMessage);
 
   return (
     <div className="relative">
-      <ScrollReveal kind="fade" className="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16">
-        <div>
-          <Eyebrow>{data.eyebrow}</Eyebrow>
-          <h2 className="max-w-2xl font-body text-[clamp(2.75rem,5.5vw,6rem)] font-normal leading-[0.98] tracking-[-0.055em] text-[#191817]">
-            {data.title}
-          </h2>
-        </div>
-        <p className="max-w-md text-base leading-[1.75] text-text-secondary lg:pb-1">{data.description}</p>
-      </ScrollReveal>
+      {showIntro && (
+        <ScrollReveal kind="fade" className="mb-10 grid gap-6 md:mb-14 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16">
+          <div>
+            <Eyebrow>{data.eyebrow}</Eyebrow>
+            <h2 className="max-w-2xl font-body text-[clamp(2.75rem,5.5vw,6rem)] font-normal leading-[0.98] tracking-[-0.055em] text-[#191817]">
+              {data.title}
+            </h2>
+          </div>
+          <p className="max-w-md text-base leading-[1.75] text-text-secondary lg:pb-1">{data.description}</p>
+        </ScrollReveal>
+      )}
 
       <div className="border border-charcoal/10 bg-white">
         <div className="grid lg:grid-cols-[minmax(19rem,.82fr)_minmax(0,1.18fr)]">

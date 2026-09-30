@@ -53,7 +53,7 @@ export function SiteHeader({
         { label: "Products", id: "products" },
         { label: "Lab", id: "/lab" },
         { label: "Sustainability", id: "sustainability" },
-        { label: "Contact", id: "contact" },
+        { label: "Contact", id: "/contact" },
       ];
 
   const headerCta = siteSettings?.headerCta || "Get a quote";

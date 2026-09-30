@@ -170,7 +170,7 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
       { label: "Products", id: "products" },
       { label: "Lab", id: "/lab" },
       { label: "Sustainability", id: "sustainability" },
-      { label: "Contact", id: "contact" },
+      { label: "Contact", id: "/contact" },
     ],
     socialLinks: [
       { label: "LinkedIn", url: "" },

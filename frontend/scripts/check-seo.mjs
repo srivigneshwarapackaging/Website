@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 const base = process.env.SEO_CHECK_URL || "http://localhost:3000";
 const canonicalOrigin = "https://srivigneshwarapackaging.com";
-const routes = ["/", "/about", "/products", "/lab", "/privacy", "/terms"];
+const routes = ["/", "/about", "/products", "/lab", "/contact", "/privacy", "/terms"];
 const pages = new Map();
 const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`, "i"))?.[1];
 const tags = (html, name) => [...html.matchAll(new RegExp(`<${name}\\b[^>]*>`, "gi"))].map(m => m[0]);
@@ -64,7 +64,7 @@ assert(business, "Missing LocalBusiness schema");
 assert(website, "Missing WebSite schema");
 assert.equal(business.url, canonicalOrigin);
 assert.equal(website.url, canonicalOrigin);
-for (const route of ["/about", "/products", "/lab"]) {
+for (const route of ["/about", "/products", "/lab", "/contact"]) {
   const routeSchemas = [
     ...pages.get(route).matchAll(
       /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g

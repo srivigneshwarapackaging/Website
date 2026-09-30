@@ -137,7 +137,7 @@ export function ProductPickerCard({
           <RequestArrow />
         </button>
       ) : (
-        <Link href="/#contact" className={requestClass}>
+        <Link href="/contact" className={requestClass}>
           Request this spec
           <RequestArrow />
         </Link>

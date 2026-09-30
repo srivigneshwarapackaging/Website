@@ -53,7 +53,7 @@ const PREVIEW_ANCHORS: Record<string, string> = {
   products: "/#products",
   sustainability: "/#sustainability",
   marquee: "/",
-  contact: "/#contact",
+  contact: "/contact",
   company: "/",
   settings: "/",
   seo: "/",

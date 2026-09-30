@@ -75,7 +75,7 @@ export function LabPage({ content }: { content: SiteContentData }) {
           </Link>
 
           <Link
-            href="/#contact"
+            href="/contact"
             className="flex min-h-[44px] items-center gap-2 rounded-[10px] bg-copper px-6 text-[0.8rem] font-semibold text-white transition-colors hover:bg-copper-dark"
           >
             Get a quote
@@ -178,7 +178,7 @@ export function LabPage({ content }: { content: SiteContentData }) {
             </div>
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/#contact"
+                href="/contact"
                 className="group flex min-h-[48px] items-center gap-2 rounded-[10px] bg-copper px-8 text-[0.85rem] font-semibold text-white transition-colors hover:bg-copper-dark"
               >
                 Request a quote

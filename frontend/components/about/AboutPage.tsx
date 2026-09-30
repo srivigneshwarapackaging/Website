@@ -60,7 +60,7 @@ export function AboutPage({ content }: { content: SiteContentData }) {
           </Link>
           <span className="hidden font-display text-sm font-bold sm:inline">{company.name}</span>
           <Magnetic>
-            <Link href="/#contact" data-cursor="link">
+            <Link href="/contact" data-cursor="link">
               <Button className="!px-5 !py-2.5 !text-xs">Get quote</Button>
             </Link>
           </Magnetic>
@@ -127,7 +127,7 @@ export function AboutPage({ content }: { content: SiteContentData }) {
               </h2>
             </div>
             <Magnetic>
-              <Link href="/#contact" data-cursor="link">
+              <Link href="/contact" data-cursor="link">
                 <Button className="group">
                   Get in touch
                   <ArrowUpRight

@@ -10,6 +10,7 @@ import type { NavLink } from "@/shared/types/content-types";
 const LEGACY_IDS: Record<string, string> = {
   capabilities: "/lab",
   calculator: "/lab#configure",
+  contact: "/contact",
   process: "/#material",
   solutions: "/products",
 };
