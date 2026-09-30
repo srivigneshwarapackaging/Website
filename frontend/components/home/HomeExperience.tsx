@@ -53,6 +53,7 @@ const ContactSection = dynamic(
  * closing ask.
  */
 export function HomeExperience({ content }: { content: SiteContentData }) {
+  const postalCode = content.contact.address.match(/\b\d{6}\b/)?.[0];
   const sameAs = (content.siteSettings.socialLinks || [])
     .map((link) => link.url?.trim())
     .filter((url): url is string => Boolean(url && /^https:\/\//i.test(url)));
@@ -73,6 +74,7 @@ export function HomeExperience({ content }: { content: SiteContentData }) {
       addressLocality: "Bengaluru",
       addressRegion: "Karnataka",
       addressCountry: "IN",
+      ...(postalCode ? { postalCode } : {}),
     },
     areaServed: "Bengaluru, Karnataka, India",
     ...(sameAs.length ? { sameAs } : {}),

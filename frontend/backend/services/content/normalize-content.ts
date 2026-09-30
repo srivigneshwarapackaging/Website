@@ -194,10 +194,11 @@ function normalizeContact(raw: Record<string, unknown> | undefined) {
     phone: (raw.phone as string) || base.phone,
     // Correct the known legacy seed typo; preserve any other CMS email.
     email: raw.email === "svcatons2015@gmail.com" ? "svcartons2015@gmail.com" : (raw.email as string) || base.email,
-    address: (raw.address as string) || base.address,
+    // Replace only the old generic placeholder; preserve a real CMS-edited address.
+    address: raw.address === "Industrial Area, Bengaluru, India" ? base.address : (raw.address as string) || base.address,
     mapUrl: (raw.mapUrl as string) || base.mapUrl,
-    mapLabel: (raw.mapLabel as string) || base.mapLabel,
-    coordinates: (raw.coordinates as string) || base.coordinates,
+    mapLabel: raw.mapLabel === "Bengaluru, India" ? base.mapLabel : (raw.mapLabel as string) || base.mapLabel,
+    coordinates: raw.coordinates === "12.97°N 77.59°E" ? "" : (raw.coordinates as string) || base.coordinates,
     infoHeadline: (raw.infoHeadline as string) || base.infoHeadline,
     infoSubtext: (raw.infoSubtext as string) || base.infoSubtext,
     formSubmitLabel: (raw.formSubmitLabel as string) || base.formSubmitLabel,

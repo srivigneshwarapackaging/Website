@@ -10,7 +10,7 @@ function mapsLinkUrl(address: string) {
 
 export function ContactMap({
   address,
-  label = "Bengaluru, India",
+  label = "Kadaranahalli, Bengaluru North",
   mapUrl,
   coordinates,
   className,

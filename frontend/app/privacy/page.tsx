@@ -46,8 +46,7 @@ export default async function PrivacyPage() {
           <section id="who">
             <h2>Who is responsible</h2>
             <p>
-              Sri Vigneshwara Packing operates from Old Sy. No. 45/1, New Sy. No. 45/9,
-              Kadaranahalli Village, Dasanapura Hobli, Bengaluru North Taluk, Karnataka 562162, India.
+              Sri Vigneshwara Packing operates from {contact.address}.
               For privacy questions, email
               {" "}<a className={linkClass} href="mailto:svcartons2015@gmail.com">svcartons2015@gmail.com</a>
               {" "}or <a className={linkClass} href="mailto:svpcorrugators@gmail.com">svpcorrugators@gmail.com</a>.

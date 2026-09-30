@@ -358,10 +358,10 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
       "Tell us what you're shipping. We'll help you determine the right packaging.",
     phone: "+91 9945019279",
     email: "svcartons2015@gmail.com",
-    address: "Industrial Area, Bengaluru, India",
+    address: "Old Sy. No. 45/1, New Sy. No. 45/9, Kadaranahalli Village, Dasanapura Hobli, Bengaluru North Taluk, Karnataka 562162, India",
     mapUrl: "",
-    mapLabel: "Bengaluru, India",
-    coordinates: "12.97°N 77.59°E",
+    mapLabel: "Kadaranahalli, Bengaluru North",
+    coordinates: "",
     infoHeadline: "Tell us about your packaging job",
     infoSubtext:
       "Share ply requirements, dimensions, print needs, or monthly volume — we'll respond with specs and pricing.",
