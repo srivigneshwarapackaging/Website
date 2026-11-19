@@ -117,6 +117,16 @@ export function ProductCataloguePage({ content }: { content: SiteContentData }) 
               The main box and tray formats we manufacture, with the construction,
               use case and supporting examples for each.
             </p>
+            <p className="mt-4 max-w-2xl text-base text-text-secondary">
+              Not sure which construction you need? Read our{" "}
+              <Link
+                href="/guides/3-ply-vs-5-ply-vs-7-ply"
+                className="font-medium text-copper-dark underline decoration-copper/50 underline-offset-4 transition-colors hover:text-charcoal"
+              >
+                3-ply vs 5-ply vs 7-ply guide
+              </Link>
+              .
+            </p>
           </Container>
         </section>
 

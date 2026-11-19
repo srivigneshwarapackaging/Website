@@ -141,6 +141,9 @@ export function SiteFooter({
               <li>
                 <FooterLink href="/lab#configure">Build your box</FooterLink>
               </li>
+              <li>
+                <FooterLink href="/guides/3-ply-vs-5-ply-vs-7-ply">3-ply vs 5-ply vs 7-ply guide</FooterLink>
+              </li>
             </ul>
 
             {industries.length > 0 && (
