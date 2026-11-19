@@ -17,7 +17,7 @@ import { LabEntry } from "@/components/sections/LabEntry";
 import { Applications } from "@/components/sections/Applications";
 import { SustainabilitySection } from "@/components/sections/Sustainability";
 import type { SiteContentData } from "@/shared/types/content-types";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, geoJsonLd, openingHoursJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 const SmoothScroll = dynamic(
@@ -57,6 +57,9 @@ export function HomeExperience({ content }: { content: SiteContentData }) {
   const sameAs = (content.siteSettings.socialLinks || [])
     .map((link) => link.url?.trim())
     .filter((url): url is string => Boolean(url && /^https:\/\//i.test(url)));
+  const geo = geoJsonLd(content.contact.coordinates);
+  const hasMap = /^https:\/\//i.test(content.contact.mapUrl?.trim() ?? "") ? content.contact.mapUrl!.trim() : undefined;
+  const openingHoursSpecification = openingHoursJsonLd(content.contact.officeHours || []);
   const localBusiness = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -77,6 +80,9 @@ export function HomeExperience({ content }: { content: SiteContentData }) {
       ...(postalCode ? { postalCode } : {}),
     },
     areaServed: "Bengaluru, Karnataka, India",
+    ...(geo ? { geo } : {}),
+    ...(hasMap ? { hasMap } : {}),
+    ...(openingHoursSpecification.length ? { openingHoursSpecification } : {}),
     ...(sameAs.length ? { sameAs } : {}),
   };
   const webSite = {
